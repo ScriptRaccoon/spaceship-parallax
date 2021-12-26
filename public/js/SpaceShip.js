@@ -1,16 +1,15 @@
 import { canvas, ctx } from "./canvas.js";
 
 export class SpaceShip {
-    constructor() {
-        this.image = new Image();
-        this.image.src = "./img/ship_sheet.png";
+    constructor(image) {
+        this.image = image;
         this.size = { x: 100, y: 100 };
         this.status = "idle";
         this.pos = {
             x: canvas.ship.width / 2,
             y: canvas.ship.height / 2,
         };
-        this.posVel = { x: 1, y: 0 };
+        this.posVel = { x: 0.6, y: 0 };
         this.posForce = { x: 0, y: 0 };
         this.maximalposForce = 0.8;
         this.posFriction = 0.99;

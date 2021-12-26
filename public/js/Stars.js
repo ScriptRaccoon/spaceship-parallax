@@ -8,8 +8,6 @@ export class Stars {
         this.number = { 1: 7000, 2: 1000, 3: 700 };
         this.parallax = { 1: 0.75, 2: 0.8, 3: 0.85 };
         this.alpha = { 1: 0.5, 2: 0.7, 3: 0.8 };
-        this.generate();
-        this.draw();
     }
     generate() {
         for (const size of this.sizes) {

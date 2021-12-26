@@ -8,8 +8,16 @@ makeFullScreen(canvas.star1, 2);
 makeFullScreen(canvas.star2, 2);
 makeFullScreen(canvas.star3, 2);
 
+const shipImage = new Image();
+shipImage.src = "./img/ship_sheet.png";
 const stars = new Stars();
-const ship = new SpaceShip();
+const ship = new SpaceShip(shipImage);
+
+shipImage.onload = () => {
+    stars.generate();
+    stars.draw();
+    loop();
+};
 
 function loop() {
     clearCanvas("ship");
@@ -18,8 +26,6 @@ function loop() {
     stars.update(ship);
     requestAnimationFrame(loop);
 }
-
-loop();
 
 window.addEventListener(
     "resize",
