@@ -1,4 +1,6 @@
+import { asteroids } from "./Asteroid.js";
 import { canvas, ctx } from "./canvas.js";
+import { distance } from "./helper.js";
 
 export let lazers = [];
 
@@ -33,6 +35,7 @@ export class Lazer {
     update() {
         this.pos.x += this.vel.x;
         this.pos.y += this.vel.y;
+        this.destroyAsteroids();
         this.removeIfOutside();
     }
 
@@ -43,7 +46,22 @@ export class Lazer {
             this.pos.y >= 0 &&
             this.pos.y <= canvas.star1.clientHeight;
         if (!isInside) {
-            lazers = lazers.filter((l) => l != this);
+            this.remove();
+        }
+    }
+
+    remove() {
+        lazers = lazers.filter((l) => l != this);
+    }
+
+    destroyAsteroids() {
+        for (const asteroid of asteroids) {
+            if (
+                distance(this.pos, asteroid.drawPos) <
+                asteroid.size / 2
+            ) {
+                asteroid.remove();
+            }
         }
     }
 }

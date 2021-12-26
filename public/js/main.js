@@ -47,7 +47,6 @@ function loop() {
     );
     [...lazers, ...asteroids, ship].forEach((obj) => obj.draw());
     stars.update(ship);
-    console.log(asteroids.length);
     requestAnimationFrame(loop);
 }
 

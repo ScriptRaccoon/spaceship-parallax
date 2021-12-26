@@ -15,3 +15,7 @@ export function randInt(a, b) {
 export function randEl(list) {
     return list[randInt(0, list.length)];
 }
+
+export function distance(u, v) {
+    return Math.sqrt(Math.pow(u.x - v.x, 2) + Math.pow(u.y - v.y, 2));
+}
