@@ -1,6 +1,6 @@
 import { clearCanvas, canvas, makeFullScreen } from "./canvas.js";
 import { debounce } from "./helper.js";
-import { Lazer } from "./Lazer.js";
+import { lazers } from "./Lazer.js";
 import { SpaceShip } from "./SpaceShip.js";
 import { Stars } from "./Stars.js";
 
@@ -22,7 +22,9 @@ shipImage.onload = () => {
 
 function loop() {
     clearCanvas("ship");
+    lazers.forEach((lazer) => lazer.update());
     ship.update();
+    lazers.forEach((lazer) => lazer.draw());
     ship.draw();
     stars.update(ship);
     requestAnimationFrame(loop);
