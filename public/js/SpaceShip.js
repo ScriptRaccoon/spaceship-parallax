@@ -178,5 +178,8 @@ export class SpaceShip {
         this.destroyed = false;
         this.status = "idle";
         this.size = { ...this.originalSize };
+        this.rotation = 0;
+        this.rotationVel = 0;
+        this.posVel = { x: 0, y: 0 };
     }
 }
