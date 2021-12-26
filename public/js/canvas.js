@@ -22,8 +22,8 @@ export function clearCanvas(key) {
 }
 
 export function drawLoadingScreen() {
-    ctx.ship.font = "30px Consolas";
     ctx.ship.fillStyle = "white";
+    ctx.ship.font = "30px Consolas";
     ctx.ship.textAlign = "center";
     ctx.ship.fillText(
         "Use the Arrow keys to move the spaceship.",
@@ -43,14 +43,15 @@ export function drawLoadingScreen() {
 }
 
 export function drawGameover() {
-    ctx.ship.save();
+    ctx.ship.fillStyle = "white";
+    ctx.ship.textAlign = "center";
     ctx.ship.font = "90px Consolas";
     ctx.ship.fillText(
         "Gameover",
         canvas.ship.width / 2,
         canvas.ship.height / 2
     );
-    ctx.ship.restore();
+    ctx.ship.font = "30px Consolas";
     ctx.ship.fillText(
         "Press Enter to restart the game.",
         canvas.ship.width / 2,
@@ -59,7 +60,6 @@ export function drawGameover() {
 }
 
 export function drawScore(score) {
-    ctx.ship.save();
     ctx.ship.textAlign = "left";
     ctx.ship.font = "20px Consolas";
     ctx.ship.fillStyle = "green";
@@ -69,5 +69,4 @@ export function drawScore(score) {
         15,
         25
     );
-    ctx.ship.restore();
 }

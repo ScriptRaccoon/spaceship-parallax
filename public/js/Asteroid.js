@@ -4,7 +4,7 @@ import { IMAGE } from "./images.js";
 
 export let asteroids = [];
 
-export function generateAsteroids(frequency = 800) {
+export function generateAsteroids(frequency = 300) {
     setInterval(() => new Asteroid(), frequency);
 }
 
