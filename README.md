@@ -1,8 +1,8 @@
-# Spaceship with Parallax effect
+# Spaceship Parallax
 
 https://spaceship-parallax.netlify.app
 
-Navigate a spaceship through space. The stars show a parallax effect. Avoid the asteroids. You can shoot them with lasers.
+This is a space shooter game. You can navigate a spaceship through space, which is able to shoot asteroids. The stars in the background show a parallax effect.
 
 <img src="./public/img/screenshot.png" alt="Screenshot" width="300"/>
 
