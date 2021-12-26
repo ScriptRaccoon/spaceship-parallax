@@ -8,6 +8,12 @@ export class Stars {
         this.number = { 1: 7000, 2: 1000, 3: 700 };
         this.parallax = { 1: 0.75, 2: 0.8, 3: 0.85 };
         this.alpha = { 1: 0.5, 2: 0.7, 3: 0.8 };
+        this.scale = 1;
+        this.scaleVel = 0.00025;
+        this.updateCanvas({
+            x: canvas.entity.width / 2,
+            y: canvas.entity.height / 2,
+        });
     }
     generate() {
         for (const size of this.sizes) {
@@ -38,14 +44,26 @@ export class Stars {
         }
     }
     update(ship) {
+        this.updateCanvas(ship.pos);
+        this.updateScale();
+    }
+
+    updateScale() {
+        this.scale += this.scaleVel;
+        if (this.scale > 1.7 || this.scale < 1) {
+            this.scaleVel *= -1;
+        }
+    }
+
+    updateCanvas(pos) {
         for (const size of this.sizes) {
             const offset = {
-                x: -this.parallax[size] * ship.pos.x,
-                y: -this.parallax[size] * ship.pos.y,
+                x: -this.parallax[size] * pos.x,
+                y: -this.parallax[size] * pos.y,
             };
             canvas[
                 `star${size}`
-            ].style.transform = `translateX(${offset.x}px) translateY(${offset.y}px)`;
+            ].style.transform = `translateX(${offset.x}px) translateY(${offset.y}px) scale(${this.scale})`;
         }
     }
 }
