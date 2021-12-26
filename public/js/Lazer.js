@@ -33,10 +33,10 @@ export class Lazer {
         ctx.ship.restore();
     }
 
-    update() {
+    update(ship) {
         this.pos.x += this.vel.x;
         this.pos.y += this.vel.y;
-        this.destroyAsteroids();
+        this.destroyAsteroids(ship);
         this.removeIfOutside();
     }
 
@@ -55,7 +55,7 @@ export class Lazer {
         lazers = lazers.filter((l) => l != this);
     }
 
-    destroyAsteroids() {
+    destroyAsteroids(ship) {
         for (const asteroid of asteroids) {
             if (
                 distance(this.pos, {
@@ -65,6 +65,7 @@ export class Lazer {
                 asteroid.size / 2
             ) {
                 asteroid.destroyed = true;
+                ship.score++;
                 this.remove();
             }
         }

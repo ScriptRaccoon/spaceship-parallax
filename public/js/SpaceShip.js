@@ -30,6 +30,7 @@ export class SpaceShip {
             turn_left: 4,
         };
         this.destroyed = false;
+        this.score = 0;
         this.addControls();
     }
 
@@ -170,6 +171,7 @@ export class SpaceShip {
     }
 
     reset() {
+        this.score = 0;
         for (const asteroid of asteroids) {
             asteroid.remove();
         }

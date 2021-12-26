@@ -57,3 +57,17 @@ export function drawGameover() {
         canvas.ship.height / 2 + 100
     );
 }
+
+export function drawScore(score) {
+    ctx.ship.save();
+    ctx.ship.textAlign = "left";
+    ctx.ship.font = "20px Consolas";
+    ctx.ship.fillStyle = "green";
+    ctx.ship.globalAlpha = 0.9;
+    ctx.ship.fillText(
+        "Score: " + score.toString().padStart(3, "0"),
+        15,
+        25
+    );
+    ctx.ship.restore();
+}

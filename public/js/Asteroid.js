@@ -107,8 +107,9 @@ export class Asteroid {
 
     destroyShip(ship) {
         if (
+            !ship.destroyed &&
             distance(ship.pos, this.drawPos) <
-            ship.size.x / 2 + this.size / 2
+                ship.size.x / 2 + this.size / 2
         ) {
             ship.destroyed = true;
         }

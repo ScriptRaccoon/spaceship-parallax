@@ -9,6 +9,7 @@ import {
     makeFullScreen,
     drawLoadingScreen,
     drawGameover,
+    drawScore,
 } from "./canvas.js";
 import { debounce } from "./helper.js";
 import { preloadImages } from "./images.js";
@@ -53,6 +54,7 @@ function loop() {
     [...lazers, ...asteroids, ship].forEach((obj) => obj.draw());
     stars.update(ship);
     if (ship.destroyed) drawGameover();
+    drawScore(ship.score);
     requestAnimationFrame(loop);
 }
 
