@@ -104,6 +104,18 @@ export class SpaceShip {
         );
 
         ctx.entity.restore();
+
+        this.drawScore();
+    }
+
+    drawScore() {
+        ctx.entity.save();
+        ctx.entity.textAlign = "left";
+        ctx.entity.font = "20px Consolas";
+        ctx.entity.fillStyle = "white";
+        ctx.entity.globalAlpha = 0.8;
+        ctx.entity.fillText(`Score: ${this.score}`, 15, 25);
+        ctx.entity.restore();
     }
 
     addControls() {

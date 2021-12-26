@@ -30,3 +30,7 @@ canvas {
 #entityCanvas {
     z-index: 10;
 }
+
+#messageCanvas {
+    z-index: 20;
+}

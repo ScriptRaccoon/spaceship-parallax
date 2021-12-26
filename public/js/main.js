@@ -21,16 +21,14 @@ preloadImages(() => {
     const ship = new SpaceShip();
 
     let gameRunning = false;
-    let gameOver = false;
 
     stars.generate();
     stars.draw();
 
     window.addEventListener("keydown", (e) => {
         if (e.key == "Enter") {
-            if (gameOver) {
+            if (ship.destroyed) {
                 clearCanvas("message");
-                gameOver = false;
                 Asteroid.removeAll();
                 ship.reset();
             } else if (gameRunning) {
@@ -63,9 +61,6 @@ preloadImages(() => {
         [...Lazer.list, ...Asteroid.list, ship].forEach((obj) =>
             obj.draw()
         );
-        if (ship.destroyed) {
-            gameOver = true;
-        }
         gameRunning ? requestAnimationFrame(gameLoop) : drawPause();
     }
 });
