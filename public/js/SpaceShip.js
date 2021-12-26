@@ -27,6 +27,7 @@ export class SpaceShip {
             turn_right: 3,
             turn_left: 4,
         };
+        this.destroyed = false;
         this.addControls();
     }
 
@@ -65,6 +66,7 @@ export class SpaceShip {
     }
 
     update() {
+        if (this.destroyed) return;
         this.posVel.x += this.posForce.x;
         this.posVel.y += this.posForce.y;
         this.posForce.x = 0;
@@ -84,6 +86,7 @@ export class SpaceShip {
     }
 
     shoot() {
+        if (this.destroyed) return;
         new Lazer({
             pos: { ...this.pos },
             initialVel: { ...this.posVel },
@@ -134,14 +137,17 @@ export class SpaceShip {
         ctx.ship.restore();
     }
     turnLeft() {
+        if (this.destroyed) return;
         this.status = "turn_left";
         this.rotationForce = -this.maximalRotationForce;
     }
     turnRight() {
+        if (this.destroyed) return;
         this.status = "turn_right";
         this.rotationForce = +this.maximalRotationForce;
     }
     boost(direction) {
+        if (this.destroyed) return;
         this.status = direction == 1 ? "boost" : "anti_boost";
         this.posForce = {
             x:

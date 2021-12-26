@@ -1,5 +1,5 @@
 import { canvas, ctx } from "./canvas.js";
-import { randInt } from "./helper.js";
+import { distance, randInt } from "./helper.js";
 import { IMAGE } from "./images.js";
 
 export let asteroids = [];
@@ -66,7 +66,7 @@ export class Asteroid {
                 this.remove();
             }
         }
-
+        this.destroyShip(ship);
         this.removeIfOutside();
     }
 
@@ -103,5 +103,14 @@ export class Asteroid {
 
     remove() {
         asteroids = asteroids.filter((a) => a != this);
+    }
+
+    destroyShip(ship) {
+        if (
+            distance(ship.pos, this.drawPos) <
+            ship.size.x / 2 + this.size / 2
+        ) {
+            ship.destroyed = true;
+        }
     }
 }
