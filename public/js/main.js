@@ -10,6 +10,7 @@ import {
     drawLoadingScreen,
     drawGameover,
     drawScore,
+    drawIntroScreen,
 } from "./canvas.js";
 import { debounce } from "./helper.js";
 import { preloadImages } from "./images.js";
@@ -25,6 +26,8 @@ makeFullScreen(canvas.star3, 2);
 let stars;
 let ship;
 let gameRunning = false;
+
+drawIntroScreen();
 
 preloadImages(() => {
     stars = new Stars();

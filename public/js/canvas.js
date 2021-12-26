@@ -22,6 +22,7 @@ export function clearCanvas(key) {
 }
 
 export function drawLoadingScreen() {
+    clearCanvas("ship");
     ctx.ship.fillStyle = "white";
     ctx.ship.font = "30px Consolas";
     ctx.ship.textAlign = "center";
@@ -30,10 +31,16 @@ export function drawLoadingScreen() {
         canvas.ship.width / 2,
         canvas.ship.height / 2 - 100
     );
+
     ctx.ship.fillText(
         "Use the Space key to shoot lazers.",
         canvas.ship.width / 2,
         canvas.ship.height / 2 - 50
+    );
+    ctx.ship.fillText(
+        "Watch out for asteroids!",
+        canvas.ship.width / 2,
+        canvas.ship.height / 2
     );
     ctx.ship.fillText(
         "Press Enter to start the game.",
@@ -68,5 +75,16 @@ export function drawScore(score) {
         "Score: " + score.toString().padStart(3, "0"),
         15,
         25
+    );
+}
+
+export function drawIntroScreen() {
+    ctx.ship.fillStyle = "white";
+    ctx.ship.font = "30px Consolas";
+    ctx.ship.textAlign = "center";
+    ctx.ship.fillText(
+        "Game is loading...",
+        canvas.ship.width / 2,
+        canvas.ship.height / 2
     );
 }
