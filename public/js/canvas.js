@@ -41,3 +41,19 @@ export function drawLoadingScreen() {
         canvas.ship.height / 2 + 100
     );
 }
+
+export function drawGameover() {
+    ctx.ship.save();
+    ctx.ship.font = "90px Consolas";
+    ctx.ship.fillText(
+        "Gameover",
+        canvas.ship.width / 2,
+        canvas.ship.height / 2
+    );
+    ctx.ship.restore();
+    ctx.ship.fillText(
+        "Press Enter to restart the game.",
+        canvas.ship.width / 2,
+        canvas.ship.height / 2 + 100
+    );
+}

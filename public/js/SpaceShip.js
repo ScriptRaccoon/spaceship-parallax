@@ -66,7 +66,6 @@ export class SpaceShip {
     }
 
     update() {
-        if (this.destroyed) return;
         this.posVel.x += this.posForce.x;
         this.posVel.y += this.posForce.y;
         this.posForce.x = 0;
@@ -80,6 +79,13 @@ export class SpaceShip {
         this.rotationForce = 0;
         this.rotation += this.rotationVel;
         this.rotationVel *= this.rotationFriction;
+
+        if (this.destroyed) {
+            this.size.x *= 0.95;
+            this.size.y *= 0.95;
+            if (this.size.x <= 1) this.size.x = 0;
+            if (this.size.y <= 1) this.size.y = 0;
+        }
 
         this.handleTinyVel();
         this.boundToCanvas();
@@ -126,8 +132,8 @@ export class SpaceShip {
             this.image,
             this.frames[this.status] * this.size.x,
             0,
-            this.size.x,
-            this.size.y,
+            100,
+            100,
             -this.size.x / 2,
             -this.size.y / 2,
             this.size.x,
