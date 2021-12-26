@@ -49,12 +49,18 @@ export function drawLoadingScreen() {
     );
 }
 
-export function drawGameover() {
+export function drawGameover(score) {
     ctx.entity.fillStyle = "white";
     ctx.entity.textAlign = "center";
     ctx.entity.font = "90px Consolas";
     ctx.entity.fillText(
         "Gameover",
+        canvas.entity.width / 2,
+        canvas.entity.height / 2 - 100
+    );
+    ctx.entity.font = "50px Consolas";
+    ctx.entity.fillText(
+        `Score: ${score}`,
         canvas.entity.width / 2,
         canvas.entity.height / 2
     );
@@ -71,11 +77,7 @@ export function drawScore(score) {
     ctx.entity.font = "20px Consolas";
     ctx.entity.fillStyle = "green";
     ctx.entity.globalAlpha = 0.9;
-    ctx.entity.fillText(
-        "Score: " + score.toString().padStart(3, "0"),
-        15,
-        25
-    );
+    ctx.entity.fillText(`Score: ${score}`, 15, 25);
 }
 
 export function drawIntroScreen() {

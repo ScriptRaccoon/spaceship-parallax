@@ -61,7 +61,7 @@ function loop() {
     stars.update(ship);
     if (ship.destroyed) {
         gameOver = true;
-        drawGameover();
+        drawGameover(ship.score);
     }
     drawScore(ship.score);
     if (gameRunning) requestAnimationFrame(loop);
