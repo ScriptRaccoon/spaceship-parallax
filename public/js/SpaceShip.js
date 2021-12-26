@@ -1,9 +1,10 @@
 import { canvas, ctx } from "./canvas.js";
+import { IMAGE } from "./images.js";
 import { Lazer } from "./Lazer.js";
 
 export class SpaceShip {
-    constructor(image) {
-        this.image = image;
+    constructor() {
+        this.image = IMAGE.ship;
         this.size = { x: 100, y: 100 };
         this.status = "idle";
         this.pos = {

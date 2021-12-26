@@ -5,6 +5,7 @@ import {
     drawLoadingScreen,
 } from "./canvas.js";
 import { debounce } from "./helper.js";
+import { preloadImages } from "./images.js";
 import { lazers } from "./Lazer.js";
 import { SpaceShip } from "./SpaceShip.js";
 import { Stars } from "./Stars.js";
@@ -14,14 +15,13 @@ makeFullScreen(canvas.star1, 2);
 makeFullScreen(canvas.star2, 2);
 makeFullScreen(canvas.star3, 2);
 
-const shipImage = new Image();
-shipImage.src = "./img/ship_sheet.png";
-const stars = new Stars();
-const ship = new SpaceShip(shipImage);
-
+let stars;
+let ship;
 let gameRunning = false;
 
-shipImage.onload = () => {
+preloadImages(() => {
+    stars = new Stars();
+    ship = new SpaceShip();
     stars.generate();
     stars.draw();
     drawLoadingScreen();
@@ -32,7 +32,7 @@ shipImage.onload = () => {
             loop();
         }
     });
-};
+});
 
 function loop() {
     clearCanvas("ship");
