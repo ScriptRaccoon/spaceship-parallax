@@ -1,5 +1,16 @@
 import { canvas, clearCanvas, ctx } from "./canvas.js";
 
+export function drawIntroScreen() {
+    ctx.entity.fillStyle = "white";
+    ctx.entity.font = "30px Consolas";
+    ctx.entity.textAlign = "center";
+    ctx.entity.fillText(
+        "Game is loading...",
+        canvas.entity.width / 2,
+        canvas.entity.height / 2
+    );
+}
+
 export function drawLoadingScreen() {
     clearCanvas("entity");
     ctx.entity.fillStyle = "white";
@@ -28,6 +39,25 @@ export function drawLoadingScreen() {
     );
 }
 
+export function drawScore(score) {
+    ctx.entity.textAlign = "left";
+    ctx.entity.font = "20px Consolas";
+    ctx.entity.fillStyle = "green";
+    ctx.entity.globalAlpha = 0.9;
+    ctx.entity.fillText(`Score: ${score}`, 15, 25);
+}
+
+export function drawPause() {
+    ctx.entity.fillStyle = "white";
+    ctx.entity.textAlign = "center";
+    ctx.entity.font = "30px Consolas";
+    ctx.entity.fillText(
+        "Paused",
+        canvas.entity.width / 2,
+        canvas.entity.height / 2
+    );
+}
+
 export function drawGameover(score) {
     ctx.entity.fillStyle = "white";
     ctx.entity.textAlign = "center";
@@ -48,24 +78,5 @@ export function drawGameover(score) {
         "Press Enter to restart the game.",
         canvas.entity.width / 2,
         canvas.entity.height / 2 + 100
-    );
-}
-
-export function drawScore(score) {
-    ctx.entity.textAlign = "left";
-    ctx.entity.font = "20px Consolas";
-    ctx.entity.fillStyle = "green";
-    ctx.entity.globalAlpha = 0.9;
-    ctx.entity.fillText(`Score: ${score}`, 15, 25);
-}
-
-export function drawIntroScreen() {
-    ctx.entity.fillStyle = "white";
-    ctx.entity.font = "30px Consolas";
-    ctx.entity.textAlign = "center";
-    ctx.entity.fillText(
-        "Game is loading...",
-        canvas.entity.width / 2,
-        canvas.entity.height / 2
     );
 }

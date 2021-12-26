@@ -10,6 +10,7 @@ import {
     drawGameover,
     drawIntroScreen,
     drawLoadingScreen,
+    drawPause,
     drawScore,
 } from "./screens.js";
 
@@ -63,7 +64,11 @@ function loop() {
         drawGameover(ship.score);
     }
     drawScore(ship.score);
-    if (gameRunning) requestAnimationFrame(loop);
+    if (gameRunning) {
+        requestAnimationFrame(loop);
+    } else {
+        drawPause();
+    }
 }
 
 window.addEventListener(
