@@ -65,7 +65,7 @@ export class Lazer {
                 asteroid.size / 2
             ) {
                 asteroid.destroyed = true;
-                ship.score++;
+                ship.score += asteroid.score;
                 this.remove();
             }
         }

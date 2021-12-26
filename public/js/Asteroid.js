@@ -19,6 +19,11 @@ export class Asteroid {
         m: 60,
         l: 120,
     };
+    static SCORE = {
+        s: 5,
+        m: 2,
+        l: 1,
+    };
     constructor() {
         const side = randInt(0, 4);
         this.type = randEl(["s", "l", "m"]);
@@ -60,8 +65,9 @@ export class Asteroid {
         this.animationTimer = 0;
         this.parallax = 1;
         this.drawPos = { x: 0, y: 0 };
-        asteroids.push(this);
         this.destroyed = false;
+        this.score = Asteroid.SCORE[this.type];
+        asteroids.push(this);
     }
 
     update(ship) {
