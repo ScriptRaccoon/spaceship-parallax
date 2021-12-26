@@ -1,4 +1,9 @@
-import { clearCanvas, canvas, makeFullScreen } from "./canvas.js";
+import {
+    clearCanvas,
+    canvas,
+    makeFullScreen,
+    drawLoadingScreen,
+} from "./canvas.js";
 import { debounce } from "./helper.js";
 import { lazers } from "./Lazer.js";
 import { SpaceShip } from "./SpaceShip.js";
@@ -14,10 +19,19 @@ shipImage.src = "./img/ship_sheet.png";
 const stars = new Stars();
 const ship = new SpaceShip(shipImage);
 
+let gameRunning = false;
+
 shipImage.onload = () => {
     stars.generate();
     stars.draw();
-    loop();
+    drawLoadingScreen();
+
+    window.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" && !gameRunning) {
+            gameRunning = true;
+            loop();
+        }
+    });
 };
 
 function loop() {
@@ -39,5 +53,6 @@ window.addEventListener(
         makeFullScreen(canvas.star3, 2);
         stars.generate();
         stars.draw();
+        if (!gameRunning) drawLoadingScreen();
     }, 150)
 );
