@@ -1,3 +1,4 @@
+import { asteroids } from "./Asteroid.js";
 import { canvas, ctx } from "./canvas.js";
 import { IMAGE } from "./images.js";
 import { Lazer } from "./Lazer.js";
@@ -5,7 +6,8 @@ import { Lazer } from "./Lazer.js";
 export class SpaceShip {
     constructor() {
         this.image = IMAGE.ship;
-        this.size = { x: 100, y: 100 };
+        this.originalSize = { x: 100, y: 100 };
+        this.size = { ...this.originalSize };
         this.status = "idle";
         this.pos = {
             x: canvas.ship.width / 2,
@@ -132,8 +134,8 @@ export class SpaceShip {
             this.image,
             this.frames[this.status] * this.size.x,
             0,
-            100,
-            100,
+            this.originalSize.x,
+            this.originalSize.y,
             -this.size.x / 2,
             -this.size.y / 2,
             this.size.x,
@@ -165,5 +167,14 @@ export class SpaceShip {
                 direction *
                 Math.sin(this.rotation),
         };
+    }
+
+    reset() {
+        for (const asteroid of asteroids) {
+            asteroid.remove();
+        }
+        this.destroyed = false;
+        this.status = "idle";
+        this.size = { ...this.originalSize };
     }
 }

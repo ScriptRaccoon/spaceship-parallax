@@ -33,10 +33,14 @@ preloadImages(() => {
     drawLoadingScreen();
 
     window.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" && !gameRunning) {
-            gameRunning = true;
-            generateAsteroids();
-            loop();
+        if (e.key === "Enter") {
+            if (gameRunning) {
+                ship.reset();
+            } else {
+                gameRunning = true;
+                generateAsteroids();
+                loop();
+            }
         }
     });
 });
