@@ -43,6 +43,9 @@ export class SpaceShip {
                 case "ArrowRight":
                     this.turnRight();
                     break;
+                case " ":
+                    this.shoot();
+                    break;
             }
         });
         window.addEventListener("keyup", (e) => {
@@ -76,6 +79,10 @@ export class SpaceShip {
 
         this.handleTinyVel();
         this.boundToCanvas();
+    }
+
+    shoot() {
+        console.log("shoot!");
     }
 
     boundToCanvas() {

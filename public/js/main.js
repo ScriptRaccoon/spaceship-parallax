@@ -1,5 +1,6 @@
 import { clearCanvas, canvas, makeFullScreen } from "./canvas.js";
 import { debounce } from "./helper.js";
+import { Lazer } from "./Lazer.js";
 import { SpaceShip } from "./SpaceShip.js";
 import { Stars } from "./Stars.js";
 
