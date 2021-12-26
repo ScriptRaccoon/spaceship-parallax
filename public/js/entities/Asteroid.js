@@ -4,10 +4,6 @@ import { IMAGE } from "../images.js";
 
 export let asteroids = [];
 
-export function generateAsteroids(frequency = 300) {
-    setInterval(() => new Asteroid(), frequency);
-}
-
 export class Asteroid {
     static SIZES = {
         s: 32,
@@ -24,6 +20,20 @@ export class Asteroid {
         m: 2,
         l: 1,
     };
+
+    static interval = null;
+
+    static startGenerating(frequency = 300) {
+        Asteroid.interval = setInterval(
+            () => new Asteroid(),
+            frequency
+        );
+    }
+
+    static stopGenerating() {
+        clearInterval(Asteroid.interval);
+    }
+
     constructor() {
         const side = randInt(0, 4);
         this.type = randEl(["s", "l", "m"]);

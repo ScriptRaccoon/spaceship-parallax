@@ -1,4 +1,4 @@
-import { asteroids, generateAsteroids } from "./entities/Asteroid.js";
+import { asteroids, Asteroid } from "./entities/Asteroid.js";
 import {
     clearCanvas,
     canvas,
@@ -41,9 +41,10 @@ preloadImages(() => {
                     ship.reset();
                 } else if (gameRunning) {
                     gameRunning = false;
+                    Asteroid.stopGenerating();
                 } else {
                     gameRunning = true;
-                    if (asteroids.length == 0) generateAsteroids();
+                    Asteroid.startGenerating();
                     loop();
                 }
                 break;
