@@ -1,8 +1,8 @@
-# Spaceship Parallax
+# Space Parallax
 
 https://spaceship-parallax.netlify.app
 
-This is a space shooter game. You can navigate a spaceship through space, which is able to shoot asteroids. The stars in the background show a parallax effect.
+This is a space shooter game. You can navigate a spaceship through space, which is able to shoot asteroids. The stars in the background show a parallax effect, therefore the name.
 
 <img src="./public/img/screenshot.png" alt="Screenshot" width="300"/>
 
