@@ -1,6 +1,10 @@
 export const IMAGE = {};
 
-const sources = ["ship"];
+const asteroidSources = new Array(120)
+    .fill()
+    .map((x, n) => "Asteroid-A-09-" + n.toString().padStart(3, "0"));
+
+const sources = ["ship", ...asteroidSources];
 
 export function preloadImages(callbackFunction) {
     function preloadImage(i) {
