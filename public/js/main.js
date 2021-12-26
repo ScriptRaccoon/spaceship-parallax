@@ -1,10 +1,9 @@
-import { asteroids, Asteroid } from "./entities/Asteroid.js";
-import { clearCanvas, canvas, makeFullScreen } from "./canvas.js";
-
+import { Asteroid } from "./entities/Asteroid.js";
+import { Lazer } from "./entities/Lazer.js";
+import { SpaceShip } from "./entities/SpaceShip.js";
+import { clearCanvas, makeCanvasesFullScreen } from "./canvas.js";
 import { debounce } from "./helper.js";
 import { preloadImages } from "./images.js";
-import { lazers } from "./entities/Lazer.js";
-import { SpaceShip } from "./entities/SpaceShip.js";
 import { Stars } from "./Stars.js";
 import {
     drawGameover,
@@ -14,75 +13,61 @@ import {
     drawScore,
 } from "./screens.js";
 
-makeFullScreen(canvas.entity);
-makeFullScreen(canvas.star1, 2);
-makeFullScreen(canvas.star2, 2);
-makeFullScreen(canvas.star3, 2);
-
-let stars;
-let ship;
-let gameRunning = false;
-let gameOver = false;
-
+makeCanvasesFullScreen();
 drawIntroScreen();
 
 preloadImages(() => {
-    stars = new Stars();
-    ship = new SpaceShip();
-    stars.generate();
-    stars.draw();
     drawLoadingScreen();
 
+    const stars = new Stars();
+    const ship = new SpaceShip();
+
+    let gameRunning = false;
+    let gameOver = false;
+
+    stars.generate();
+    stars.draw();
+
     window.addEventListener("keydown", (e) => {
-        switch (e.key) {
-            case "Enter":
-                if (gameOver) {
-                    gameOver = false;
-                    for (const asteroid of asteroids) {
-                        asteroid.remove();
-                    }
-                    ship.reset();
-                } else if (gameRunning) {
-                    gameRunning = false;
-                    Asteroid.stopGenerating();
-                } else {
-                    gameRunning = true;
-                    Asteroid.startGenerating();
-                    loop();
-                }
-                break;
+        if (e.key == "Enter") {
+            if (gameOver) {
+                gameOver = false;
+                Asteroid.removeAll();
+                ship.reset();
+            } else if (gameRunning) {
+                gameRunning = false;
+                Asteroid.stopGenerating();
+            } else {
+                gameRunning = true;
+                Asteroid.startGenerating();
+                gameLoop();
+            }
         }
     });
-});
 
-function loop() {
-    clearCanvas("entity");
-    [...lazers, ...asteroids, ship].forEach((obj) =>
-        obj.update(ship)
+    window.addEventListener(
+        "resize",
+        debounce(() => {
+            makeCanvasesFullScreen();
+            stars.generate();
+            stars.draw();
+            if (!gameRunning) drawLoadingScreen();
+        }, 150)
     );
-    [...lazers, ...asteroids, ship].forEach((obj) => obj.draw());
-    stars.update(ship);
-    if (ship.destroyed) {
-        gameOver = true;
-        drawGameover(ship.score);
-    }
-    drawScore(ship.score);
-    if (gameRunning) {
-        requestAnimationFrame(loop);
-    } else {
-        drawPause();
-    }
-}
 
-window.addEventListener(
-    "resize",
-    debounce(() => {
-        makeFullScreen(canvas.entity);
-        makeFullScreen(canvas.star1, 2);
-        makeFullScreen(canvas.star2, 2);
-        makeFullScreen(canvas.star3, 2);
-        stars.generate();
-        stars.draw();
-        if (!gameRunning) drawLoadingScreen();
-    }, 150)
-);
+    function gameLoop() {
+        clearCanvas("entity");
+        [...Lazer.list, ...Asteroid.list, ship, stars].forEach(
+            (obj) => obj.update(ship)
+        );
+        [...Lazer.list, ...Asteroid.list, ship].forEach((obj) =>
+            obj.draw()
+        );
+        drawScore(ship.score);
+        if (ship.destroyed) {
+            gameOver = true;
+            drawGameover(ship.score);
+        }
+        gameRunning ? requestAnimationFrame(gameLoop) : drawPause();
+    }
+});

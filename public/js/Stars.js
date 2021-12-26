@@ -3,11 +3,12 @@ import { canvas, clearCanvas, ctx } from "./canvas.js";
 
 export class Stars {
     constructor() {
+        this.sizes = ["1", "2", "3"];
         this.list = { 1: [], 2: [], 3: [] };
-        this.sizes = Object.keys(this.list);
         this.number = { 1: 7000, 2: 1000, 3: 700 };
         this.parallax = { 1: 0.75, 2: 0.8, 3: 0.85 };
         this.alpha = { 1: 0.5, 2: 0.7, 3: 0.8 };
+        this.color = "rgb(200, 179, 79)";
         this.scale = 1;
         this.scaleVel = 0.00025;
         this.updateCanvas({
@@ -28,9 +29,9 @@ export class Stars {
     draw() {
         for (const size of this.sizes) {
             clearCanvas(`star${size}`);
-            ctx[`star${size}`].fillStyle = "rgb(200, 179, 79)";
+            ctx[`star${size}`].fillStyle = this.color;
             ctx[`star${size}`].globalAlpha = this.alpha[size];
-            for (const { x, y } of this.list[size]) {
+            this.list[size].forEach(({ x, y }) => {
                 ctx[`star${size}`].beginPath();
                 ctx[`star${size}`].arc(
                     x,
@@ -40,7 +41,7 @@ export class Stars {
                     2 * Math.PI
                 );
                 ctx[`star${size}`].fill();
-            }
+            });
         }
     }
     update(ship) {
@@ -61,9 +62,10 @@ export class Stars {
                 x: -this.parallax[size] * pos.x,
                 y: -this.parallax[size] * pos.y,
             };
-            canvas[
-                `star${size}`
-            ].style.transform = `translateX(${offset.x}px) translateY(${offset.y}px) scale(${this.scale})`;
+            canvas[`star${size}`].style.transform =
+                `translateX(${offset.x}px)` +
+                `translateY(${offset.y}px)` +
+                `scale(${this.scale})`;
         }
     }
 }

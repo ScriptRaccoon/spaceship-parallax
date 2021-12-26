@@ -6,76 +6,47 @@ export class SpaceShip {
     constructor() {
         this.image = IMAGE.ship;
         this.size = { x: 100, y: 100 };
-        this.status = "idle";
+
         this.pos = {
             x: canvas.entity.width / 2,
             y: canvas.entity.height / 2,
         };
-        this.posVel = { x: 0.6, y: 0 };
-        this.posForce = { x: 0, y: 0 };
-        this.maximalposForce = 0.8;
-        this.posFriction = 0.99;
+        this.vel = { x: 0.6, y: 0 };
+        this.force = { x: 0, y: 0 };
+        this.maximalForce = 0.8;
+        this.friction = 0.99;
+
         this.rotation = 0;
         this.rotationVel = 0;
         this.rotationForce = 0;
-        this.maximalRotationForce = 0.03;
+        this.rotationMaximalForce = 0.03;
         this.rotationFriction = 0.95;
+
+        this.status = "idle";
         this.frames = {
             idle: 0,
-            boost: 1,
-            anti_boost: 2,
+            boost_forwards: 1,
+            boost_backwards: 2,
             turn_right: 3,
             turn_left: 4,
         };
+
         this.destroyed = false;
         this.score = 0;
         this.alpha = 1;
+
         this.addControls();
     }
 
-    addControls() {
-        window.addEventListener("keydown", (e) => {
-            switch (e.key) {
-                case "ArrowUp":
-                    this.boost(1);
-                    break;
-                case "ArrowDown":
-                    this.boost(-1);
-                    break;
-                case "ArrowLeft":
-                    this.turnLeft();
-                    break;
-                case "ArrowRight":
-                    this.turnRight();
-                    break;
-                case " ":
-                    this.shoot();
-                    break;
-            }
-        });
-        window.addEventListener("keyup", (e) => {
-            if (
-                [
-                    "ArrowLeft",
-                    "ArrowRight",
-                    "ArrowUp",
-                    "ArrowDown",
-                ].includes(e.key)
-            ) {
-                this.status = "idle";
-            }
-        });
-    }
-
     update() {
-        this.posVel.x += this.posForce.x;
-        this.posVel.y += this.posForce.y;
-        this.posForce.x = 0;
-        this.posForce.y = 0;
-        this.pos.x += this.posVel.x;
-        this.pos.y += this.posVel.y;
-        this.posVel.x *= this.posFriction;
-        this.posVel.y *= this.posFriction;
+        this.vel.x += this.force.x;
+        this.vel.y += this.force.y;
+        this.force.x = 0;
+        this.force.y = 0;
+        this.pos.x += this.vel.x;
+        this.pos.y += this.vel.y;
+        this.vel.x *= this.friction;
+        this.vel.y *= this.friction;
 
         this.rotationVel += this.rotationForce;
         this.rotationForce = 0;
@@ -91,13 +62,17 @@ export class SpaceShip {
         this.boundToCanvas();
     }
 
-    shoot() {
-        if (this.destroyed) return;
-        new Lazer({
-            pos: { ...this.pos },
-            initialVel: { ...this.posVel },
-            rotation: this.rotation,
-        });
+    handleTinyVel(threshold = 0.01) {
+        if (Math.abs(this.vel.x) < threshold) {
+            this.vel.x = 0;
+        }
+        if (Math.abs(this.vel.y) < threshold) {
+            this.vel.y = 0;
+        }
+
+        if (Math.abs(this.rotationVel) < threshold) {
+            this.rotationVel = 0;
+        }
     }
 
     boundToCanvas() {
@@ -109,19 +84,6 @@ export class SpaceShip {
             0,
             Math.min(canvas.entity.height, this.pos.y)
         );
-    }
-
-    handleTinyVel(threshold = 0.01) {
-        if (Math.abs(this.posVel.x) < threshold) {
-            this.posVel.x = 0;
-        }
-        if (Math.abs(this.posVel.y) < threshold) {
-            this.posVel.y = 0;
-        }
-
-        if (Math.abs(this.rotationVel) < threshold) {
-            this.rotationVel = 0;
-        }
     }
 
     draw() {
@@ -143,28 +105,63 @@ export class SpaceShip {
 
         ctx.entity.restore();
     }
-    turnLeft() {
-        if (this.destroyed) return;
-        this.status = "turn_left";
-        this.rotationForce = -this.maximalRotationForce;
+
+    addControls() {
+        window.addEventListener("keydown", (e) => {
+            switch (e.key) {
+                case "ArrowUp":
+                    this.boost({ direction: "forwards" });
+                    break;
+                case "ArrowDown":
+                    this.boost({ direction: "backwards" });
+                    break;
+                case "ArrowLeft":
+                    this.turn({ direction: "left" });
+                    break;
+                case "ArrowRight":
+                    this.turn({ direction: "right" });
+                    break;
+                case " ":
+                    this.shoot();
+                    break;
+            }
+        });
+        window.addEventListener("keyup", (e) => {
+            const keys = [
+                "ArrowLeft",
+                "ArrowRight",
+                "ArrowUp",
+                "ArrowDown",
+            ];
+            if (keys.includes(e.key)) {
+                this.status = "idle";
+            }
+        });
     }
-    turnRight() {
+
+    shoot() {
         if (this.destroyed) return;
-        this.status = "turn_right";
-        this.rotationForce = +this.maximalRotationForce;
+        new Lazer({
+            pos: { ...this.pos },
+            initialVel: { ...this.vel },
+            rotation: this.rotation,
+        });
     }
-    boost(direction) {
+
+    turn({ direction }) {
         if (this.destroyed) return;
-        this.status = direction == 1 ? "boost" : "anti_boost";
-        this.posForce = {
-            x:
-                this.maximalposForce *
-                direction *
-                Math.cos(this.rotation),
-            y:
-                this.maximalposForce *
-                direction *
-                Math.sin(this.rotation),
+        this.status = `turn_${direction}`;
+        const sign = direction == "right" ? +1 : -1;
+        this.rotationForce = sign * this.rotationMaximalForce;
+    }
+
+    boost({ direction }) {
+        if (this.destroyed) return;
+        this.status = `boost_${direction}`;
+        const sign = direction == "forwards" ? +1 : -1;
+        this.force = {
+            x: sign * this.maximalForce * Math.cos(this.rotation),
+            y: sign * this.maximalForce * Math.sin(this.rotation),
         };
     }
 
@@ -174,7 +171,7 @@ export class SpaceShip {
         this.status = "idle";
         this.rotation = 0;
         this.rotationVel = 0;
-        this.posVel = { x: 0, y: 0 };
+        this.vel = { x: 0, y: 0 };
         this.alpha = 1;
     }
 }

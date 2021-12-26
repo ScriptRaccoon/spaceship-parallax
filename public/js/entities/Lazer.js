@@ -1,10 +1,10 @@
-import { asteroids } from "./Asteroid.js";
+import { Asteroid } from "./Asteroid.js";
 import { canvas, ctx } from "../canvas.js";
 import { distance } from "../helper.js";
 
-export let lazers = [];
-
 export class Lazer {
+    static list = [];
+
     constructor({ pos, initialVel, rotation }) {
         this.pos = pos;
         this.rotation = rotation;
@@ -14,8 +14,7 @@ export class Lazer {
             y: initialVel.y + this.speed * Math.sin(rotation),
         };
         this.size = { x: 40, y: 3 };
-        this.visible = true;
-        lazers.push(this);
+        Lazer.list.push(this);
     }
 
     draw() {
@@ -38,33 +37,30 @@ export class Lazer {
     }
 
     removeIfOutside() {
-        const isInside =
-            this.pos.x >= 0 &&
-            this.pos.x <= canvas.star1.width &&
-            this.pos.y >= 0 &&
-            this.pos.y <= canvas.star1.clientHeight;
-        if (!isInside) {
+        if (
+            this.pos.x < 0 ||
+            this.pos.x > canvas.star1.width ||
+            this.pos.y < 0 ||
+            this.pos.y > canvas.star1.height
+        ) {
             this.remove();
         }
     }
 
     remove() {
-        lazers = lazers.filter((l) => l != this);
+        Lazer.list = Lazer.list.filter((l) => l != this);
     }
 
     destroyAsteroids(ship) {
-        for (const asteroid of asteroids) {
+        Asteroid.list.forEach((asteroid) => {
             if (
-                distance(this.pos, {
-                    x: asteroid.drawPos.x,
-                    y: asteroid.drawPos.y,
-                }) <
+                distance(this.pos, asteroid.drawPos) <
                 asteroid.size / 2
             ) {
                 asteroid.destroyed = true;
                 ship.score += asteroid.score;
                 this.remove();
             }
-        }
+        });
     }
 }

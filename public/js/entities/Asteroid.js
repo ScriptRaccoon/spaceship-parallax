@@ -2,19 +2,21 @@ import { canvas, ctx } from "../canvas.js";
 import { distance, randInt, randEl } from "../helper.js";
 import { IMAGE } from "../images.js";
 
-export let asteroids = [];
-
 export class Asteroid {
-    static SIZES = {
+    static list = [];
+
+    static SIZE = {
         s: 32,
         m: 64,
         l: 128,
     };
+
     static FRAME_COUNT = {
         s: 60,
         m: 60,
         l: 120,
     };
+
     static SCORE = {
         s: 5,
         m: 2,
@@ -22,6 +24,10 @@ export class Asteroid {
     };
 
     static interval = null;
+
+    static removeAll() {
+        Asteroid.list = [];
+    }
 
     static startGenerating(frequency = 300) {
         Asteroid.interval = setInterval(
@@ -35,35 +41,37 @@ export class Asteroid {
     }
 
     constructor() {
-        const side = randInt(0, 4);
         this.type = randEl(["s", "l", "m"]);
         const name = "asteroid-" + this.type;
         this.image = IMAGE[name];
-        this.size = Asteroid.SIZES[this.type];
-        this.frameCount = Asteroid.FRAME_COUNT[this.type];
-        switch (side) {
-            case 0:
+
+        this.size = Asteroid.SIZE[this.type];
+
+        const startSide = randEl(["left", "right", "top", "bottom"]);
+
+        switch (startSide) {
+            case "left":
                 this.pos = {
                     x: -this.size / 2,
                     y: randInt(0, canvas.star1.height),
                 };
                 this.vel = { x: randInt(1, 4), y: randInt(-4, 5) };
                 break;
-            case 1:
+            case "right":
                 this.pos = {
                     x: canvas.star1.width,
                     y: randInt(0, canvas.star1.height),
                 };
                 this.vel = { x: -randInt(1, 4), y: randInt(-4, 5) };
                 break;
-            case 2:
+            case "top":
                 this.pos = {
                     x: randInt(0, canvas.star1.width),
                     y: -this.size / 2,
                 };
                 this.vel = { x: randInt(-4, 5), y: randInt(1, 4) };
                 break;
-            case 3:
+            case "bottom":
                 this.pos = {
                     x: randInt(0, canvas.star1.width),
                     y: canvas.star1.height,
@@ -71,13 +79,13 @@ export class Asteroid {
                 this.vel = { x: randInt(-4, 5), y: -randInt(1, 4) };
                 break;
         }
-        this.offset = { x: 0, y: 0 };
         this.animationTimer = 0;
+        this.frameCount = Asteroid.FRAME_COUNT[this.type];
         this.parallax = 1;
         this.drawPos = { x: 0, y: 0 };
         this.destroyed = false;
         this.score = Asteroid.SCORE[this.type];
-        asteroids.push(this);
+        Asteroid.list.push(this);
     }
 
     update(ship) {
@@ -106,10 +114,10 @@ export class Asteroid {
         ctx.entity.translate(this.drawPos.x, this.drawPos.y);
         ctx.entity.drawImage(
             this.image,
-            this.animationTimer * Asteroid.SIZES[this.type],
+            this.animationTimer * Asteroid.SIZE[this.type],
             0,
-            Asteroid.SIZES[this.type],
-            Asteroid.SIZES[this.type],
+            Asteroid.SIZE[this.type],
+            Asteroid.SIZE[this.type],
             -this.size / 2,
             -this.size / 2,
             this.size,
@@ -118,18 +126,18 @@ export class Asteroid {
         ctx.entity.restore();
     }
     removeIfOutside() {
-        const isInside =
-            this.pos.x + this.size / 2 >= 0 &&
-            this.pos.x <= canvas.star1.width + this.size / 2 &&
-            this.pos.y + this.size / 2 >= 0 &&
-            this.pos.y <= canvas.star1.height + this.size / 2;
-        if (!isInside) {
+        if (
+            this.pos.x + this.size / 2 < 0 ||
+            this.pos.y + this.size / 2 < 0 ||
+            this.pos.x > canvas.star1.width + this.size / 2 ||
+            this.pos.y > canvas.star1.height + this.size / 2
+        ) {
             this.remove();
         }
     }
 
     remove() {
-        asteroids = asteroids.filter((a) => a != this);
+        Asteroid.list = Asteroid.list.filter((a) => a != this);
     }
 
     destroyShip(ship) {
@@ -139,7 +147,7 @@ export class Asteroid {
                 ship.size.x / 2 + this.size / 2
         ) {
             ship.destroyed = true;
-            ship.rotationForce = 0.2;
+            ship.rotationForce = randEl([+1, -1]) * 0.2;
         }
     }
 }

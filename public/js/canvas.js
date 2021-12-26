@@ -12,9 +12,16 @@ export const ctx = {
     star3: canvas.star3.getContext("2d"),
 };
 
-export function makeFullScreen(canv, factor = 1) {
+function makeCanvasFullScreen(canv, factor = 1) {
     canv.width = factor * window.innerWidth;
     canv.height = factor * window.innerHeight;
+}
+
+export function makeCanvasesFullScreen() {
+    makeCanvasFullScreen(canvas.entity);
+    makeCanvasFullScreen(canvas.star1, 2);
+    makeCanvasFullScreen(canvas.star2, 2);
+    makeCanvasFullScreen(canvas.star3, 2);
 }
 
 export function clearCanvas(key) {
