@@ -18,7 +18,7 @@ import { lazers } from "./Lazer.js";
 import { SpaceShip } from "./SpaceShip.js";
 import { Stars } from "./Stars.js";
 
-makeFullScreen(canvas.ship);
+makeFullScreen(canvas.entity);
 makeFullScreen(canvas.star1, 2);
 makeFullScreen(canvas.star2, 2);
 makeFullScreen(canvas.star3, 2);
@@ -56,7 +56,7 @@ preloadImages(() => {
 });
 
 function loop() {
-    clearCanvas("ship");
+    clearCanvas("entity");
     [...lazers, ...asteroids, ship].forEach((obj) =>
         obj.update(ship)
     );
@@ -73,7 +73,7 @@ function loop() {
 window.addEventListener(
     "resize",
     debounce(() => {
-        makeFullScreen(canvas.ship);
+        makeFullScreen(canvas.entity);
         makeFullScreen(canvas.star1, 2);
         makeFullScreen(canvas.star2, 2);
         makeFullScreen(canvas.star3, 2);

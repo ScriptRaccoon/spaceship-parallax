@@ -92,9 +92,9 @@ export class Asteroid {
     }
 
     draw() {
-        ctx.ship.save();
-        ctx.ship.translate(this.drawPos.x, this.drawPos.y);
-        ctx.ship.drawImage(
+        ctx.entity.save();
+        ctx.entity.translate(this.drawPos.x, this.drawPos.y);
+        ctx.entity.drawImage(
             this.image,
             this.animationTimer * Asteroid.SIZES[this.type],
             0,
@@ -105,7 +105,7 @@ export class Asteroid {
             this.size,
             this.size
         );
-        ctx.ship.restore();
+        ctx.entity.restore();
     }
     removeIfOutside() {
         const isInside =

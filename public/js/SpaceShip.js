@@ -10,8 +10,8 @@ export class SpaceShip {
         this.size = { ...this.originalSize };
         this.status = "idle";
         this.pos = {
-            x: canvas.ship.width / 2,
-            y: canvas.ship.height / 2,
+            x: canvas.entity.width / 2,
+            y: canvas.entity.height / 2,
         };
         this.posVel = { x: 0.6, y: 0 };
         this.posForce = { x: 0, y: 0 };
@@ -106,11 +106,11 @@ export class SpaceShip {
     boundToCanvas() {
         this.pos.x = Math.max(
             0,
-            Math.min(canvas.ship.width, this.pos.x)
+            Math.min(canvas.entity.width, this.pos.x)
         );
         this.pos.y = Math.max(
             0,
-            Math.min(canvas.ship.height, this.pos.y)
+            Math.min(canvas.entity.height, this.pos.y)
         );
     }
 
@@ -128,10 +128,10 @@ export class SpaceShip {
     }
 
     draw() {
-        ctx.ship.save();
-        ctx.ship.translate(this.pos.x, this.pos.y);
-        ctx.ship.rotate(this.rotation);
-        ctx.ship.drawImage(
+        ctx.entity.save();
+        ctx.entity.translate(this.pos.x, this.pos.y);
+        ctx.entity.rotate(this.rotation);
+        ctx.entity.drawImage(
             this.image,
             this.frames[this.status] * this.originalSize.x,
             0,
@@ -143,7 +143,7 @@ export class SpaceShip {
             this.size.y
         );
 
-        ctx.ship.restore();
+        ctx.entity.restore();
     }
     turnLeft() {
         if (this.destroyed) return;

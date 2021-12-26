@@ -1,12 +1,12 @@
 export const canvas = {
-    ship: document.getElementById("shipCanvas"),
+    entity: document.getElementById("entityCanvas"),
     star1: document.getElementById("starCanvas1"),
     star2: document.getElementById("starCanvas2"),
     star3: document.getElementById("starCanvas3"),
 };
 
 export const ctx = {
-    ship: canvas.ship.getContext("2d"),
+    entity: canvas.entity.getContext("2d"),
     star1: canvas.star1.getContext("2d"),
     star2: canvas.star2.getContext("2d"),
     star3: canvas.star3.getContext("2d"),
@@ -22,56 +22,56 @@ export function clearCanvas(key) {
 }
 
 export function drawLoadingScreen() {
-    clearCanvas("ship");
-    ctx.ship.fillStyle = "white";
-    ctx.ship.font = "30px Consolas";
-    ctx.ship.textAlign = "center";
-    ctx.ship.fillText(
+    clearCanvas("entity");
+    ctx.entity.fillStyle = "white";
+    ctx.entity.font = "30px Consolas";
+    ctx.entity.textAlign = "center";
+    ctx.entity.fillText(
         "Use the Arrow keys to move the spaceship.",
-        canvas.ship.width / 2,
-        canvas.ship.height / 2 - 100
+        canvas.entity.width / 2,
+        canvas.entity.height / 2 - 100
     );
 
-    ctx.ship.fillText(
+    ctx.entity.fillText(
         "Use the Space key to shoot lazers.",
-        canvas.ship.width / 2,
-        canvas.ship.height / 2 - 50
+        canvas.entity.width / 2,
+        canvas.entity.height / 2 - 50
     );
-    ctx.ship.fillText(
+    ctx.entity.fillText(
         "Watch out for asteroids!",
-        canvas.ship.width / 2,
-        canvas.ship.height / 2
+        canvas.entity.width / 2,
+        canvas.entity.height / 2
     );
-    ctx.ship.fillText(
+    ctx.entity.fillText(
         "Press Enter to start/pause the game.",
-        canvas.ship.width / 2,
-        canvas.ship.height / 2 + 100
+        canvas.entity.width / 2,
+        canvas.entity.height / 2 + 100
     );
 }
 
 export function drawGameover() {
-    ctx.ship.fillStyle = "white";
-    ctx.ship.textAlign = "center";
-    ctx.ship.font = "90px Consolas";
-    ctx.ship.fillText(
+    ctx.entity.fillStyle = "white";
+    ctx.entity.textAlign = "center";
+    ctx.entity.font = "90px Consolas";
+    ctx.entity.fillText(
         "Gameover",
-        canvas.ship.width / 2,
-        canvas.ship.height / 2
+        canvas.entity.width / 2,
+        canvas.entity.height / 2
     );
-    ctx.ship.font = "30px Consolas";
-    ctx.ship.fillText(
+    ctx.entity.font = "30px Consolas";
+    ctx.entity.fillText(
         "Press Enter to restart the game.",
-        canvas.ship.width / 2,
-        canvas.ship.height / 2 + 100
+        canvas.entity.width / 2,
+        canvas.entity.height / 2 + 100
     );
 }
 
 export function drawScore(score) {
-    ctx.ship.textAlign = "left";
-    ctx.ship.font = "20px Consolas";
-    ctx.ship.fillStyle = "green";
-    ctx.ship.globalAlpha = 0.9;
-    ctx.ship.fillText(
+    ctx.entity.textAlign = "left";
+    ctx.entity.font = "20px Consolas";
+    ctx.entity.fillStyle = "green";
+    ctx.entity.globalAlpha = 0.9;
+    ctx.entity.fillText(
         "Score: " + score.toString().padStart(3, "0"),
         15,
         25
@@ -79,12 +79,12 @@ export function drawScore(score) {
 }
 
 export function drawIntroScreen() {
-    ctx.ship.fillStyle = "white";
-    ctx.ship.font = "30px Consolas";
-    ctx.ship.textAlign = "center";
-    ctx.ship.fillText(
+    ctx.entity.fillStyle = "white";
+    ctx.entity.font = "30px Consolas";
+    ctx.entity.textAlign = "center";
+    ctx.entity.fillText(
         "Game is loading...",
-        canvas.ship.width / 2,
-        canvas.ship.height / 2
+        canvas.entity.width / 2,
+        canvas.entity.height / 2
     );
 }

@@ -27,6 +27,6 @@ canvas {
     z-index: 3;
 }
 
-#shipCanvas {
+#entityCanvas {
     z-index: 10;
 }

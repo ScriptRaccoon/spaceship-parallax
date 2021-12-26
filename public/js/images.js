@@ -12,7 +12,6 @@ export function preloadImages(callbackFunction) {
             IMAGE[names[i]] = img;
             img.src = `./img/${names[i]}.png`;
         } else {
-            console.log(IMAGE);
             callbackFunction();
         }
     }

@@ -19,18 +19,18 @@ export class Lazer {
     }
 
     draw() {
-        ctx.ship.save();
-        ctx.ship.fillStyle = "green";
-        ctx.ship.globalAlpha = 0.8;
-        ctx.ship.translate(this.pos.x, this.pos.y);
-        ctx.ship.rotate(this.rotation);
-        ctx.ship.fillRect(
+        ctx.entity.save();
+        ctx.entity.fillStyle = "green";
+        ctx.entity.globalAlpha = 0.8;
+        ctx.entity.translate(this.pos.x, this.pos.y);
+        ctx.entity.rotate(this.rotation);
+        ctx.entity.fillRect(
             0,
             -this.size.y / 2,
             this.size.x,
             this.size.y
         );
-        ctx.ship.restore();
+        ctx.entity.restore();
     }
 
     update(ship) {
