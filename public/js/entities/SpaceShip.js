@@ -1,6 +1,6 @@
 import { asteroids } from "./Asteroid.js";
-import { canvas, ctx } from "./canvas.js";
-import { IMAGE } from "./images.js";
+import { canvas, ctx } from "../canvas.js";
+import { IMAGE } from "../images.js";
 import { Lazer } from "./Lazer.js";
 
 export class SpaceShip {

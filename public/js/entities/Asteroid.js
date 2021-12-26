@@ -1,6 +1,6 @@
-import { canvas, ctx } from "./canvas.js";
-import { distance, randInt, randEl } from "./helper.js";
-import { IMAGE } from "./images.js";
+import { canvas, ctx } from "../canvas.js";
+import { distance, randInt, randEl } from "../helper.js";
+import { IMAGE } from "../images.js";
 
 export let asteroids = [];
 

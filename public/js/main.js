@@ -1,8 +1,4 @@
-import {
-    Asteroid,
-    asteroids,
-    generateAsteroids,
-} from "./Asteroid.js";
+import { asteroids, generateAsteroids } from "./entities/Asteroid.js";
 import {
     clearCanvas,
     canvas,
@@ -14,8 +10,8 @@ import {
 } from "./canvas.js";
 import { debounce } from "./helper.js";
 import { preloadImages } from "./images.js";
-import { lazers } from "./Lazer.js";
-import { SpaceShip } from "./SpaceShip.js";
+import { lazers } from "./entities/Lazer.js";
+import { SpaceShip } from "./entities/SpaceShip.js";
 import { Stars } from "./Stars.js";
 
 makeFullScreen(canvas.entity);

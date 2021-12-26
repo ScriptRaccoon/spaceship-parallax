@@ -1,6 +1,6 @@
 import { asteroids } from "./Asteroid.js";
-import { canvas, ctx } from "./canvas.js";
-import { distance } from "./helper.js";
+import { canvas, ctx } from "../canvas.js";
+import { distance } from "../helper.js";
 
 export let lazers = [];
 
