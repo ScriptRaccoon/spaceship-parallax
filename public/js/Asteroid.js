@@ -1,5 +1,5 @@
 import { canvas, ctx } from "./canvas.js";
-import { distance, randInt } from "./helper.js";
+import { distance, randInt, randEl } from "./helper.js";
 import { IMAGE } from "./images.js";
 
 export let asteroids = [];
@@ -9,9 +9,30 @@ export function generateAsteroids(frequency = 300) {
 }
 
 export class Asteroid {
+    static SIZES = {
+        "Asteroid-A-08": 32,
+        "Asteroid-A-09": 128,
+        "Asteroid-A-10": 64,
+    };
+    static PAD = {
+        "Asteroid-A-08": 2,
+        "Asteroid-A-09": 3,
+        "Asteroid-A-10": 2,
+    };
+    static FRAME_COUNT = {
+        "Asteroid-A-08": 60,
+        "Asteroid-A-09": 120,
+        "Asteroid-A-10": 60,
+    };
     constructor() {
-        this.size = 128;
         const side = randInt(0, 4);
+        this.type = randEl([
+            "Asteroid-A-08",
+            "Asteroid-A-09",
+            "Asteroid-A-10",
+        ]);
+        this.size = Asteroid.SIZES[this.type];
+        this.frameCount = Asteroid.FRAME_COUNT[this.type];
         switch (side) {
             case 0:
                 this.pos = {
@@ -52,7 +73,8 @@ export class Asteroid {
 
     update(ship) {
         this.animationTimer++;
-        if (this.animationTimer >= 120) this.animationTimer = 0;
+        if (this.animationTimer >= this.frameCount)
+            this.animationTimer = 0;
         this.pos.x += this.vel.x;
         this.pos.y += this.vel.y;
         this.drawPos = {
@@ -74,15 +96,18 @@ export class Asteroid {
         ctx.ship.save();
         ctx.ship.translate(this.drawPos.x, this.drawPos.y);
         const frame =
-            "Asteroid-A-09-" +
-            this.animationTimer.toString().padStart(3, "0");
+            this.type +
+            "-" +
+            this.animationTimer
+                .toString()
+                .padStart(Asteroid.PAD[this.type], "0");
         const image = IMAGE[frame];
         ctx.ship.drawImage(
             image,
             0,
             0,
-            128,
-            128,
+            Asteroid.SIZES[this.type],
+            Asteroid.SIZES[this.type],
             -this.size / 2,
             -this.size / 2,
             this.size,
