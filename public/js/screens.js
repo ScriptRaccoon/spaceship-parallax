@@ -42,7 +42,7 @@ export function drawLoadingScreen() {
 export function drawScore(score) {
     ctx.entity.textAlign = "left";
     ctx.entity.font = "20px Consolas";
-    ctx.entity.fillStyle = "green";
+    ctx.entity.fillStyle = "white";
     ctx.entity.globalAlpha = 0.9;
     ctx.entity.fillText(`Score: ${score}`, 15, 25);
 }
