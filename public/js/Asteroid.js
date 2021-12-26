@@ -46,8 +46,8 @@ export class Asteroid {
         this.animationTimer = 0;
         this.parallax = 1;
         this.drawPos = { x: 0, y: 0 };
-
         asteroids.push(this);
+        this.destroyed = false;
     }
 
     update(ship) {
@@ -59,15 +59,35 @@ export class Asteroid {
             x: this.pos.x - this.parallax * ship.pos.x,
             y: this.pos.y - this.parallax * ship.pos.y,
         };
+        if (this.destroyed) {
+            this.vel = { x: 0, y: 0 };
+            this.size *= 0.8;
+            if (this.size <= 1) {
+                this.remove();
+            }
+        }
+
         this.removeIfOutside();
     }
 
     draw() {
+        ctx.ship.save();
         const frame =
             "Asteroid-A-09-" +
             this.animationTimer.toString().padStart(3, "0");
         const image = IMAGE[frame];
-        ctx.ship.drawImage(image, this.drawPos.x, this.drawPos.y);
+        ctx.ship.drawImage(
+            image,
+            0,
+            0,
+            128,
+            128,
+            this.drawPos.x,
+            this.drawPos.y,
+            this.size,
+            this.size
+        );
+        ctx.ship.restore();
     }
     removeIfOutside() {
         const isInside =

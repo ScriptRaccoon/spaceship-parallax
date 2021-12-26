@@ -19,8 +19,9 @@ export class Lazer {
     }
 
     draw() {
-        ctx.ship.fillStyle = "green";
         ctx.ship.save();
+        ctx.ship.fillStyle = "green";
+        ctx.ship.globalAlpha = 0.8;
         ctx.ship.translate(this.pos.x, this.pos.y);
         ctx.ship.rotate(this.rotation);
         ctx.ship.fillRect(
@@ -57,10 +58,13 @@ export class Lazer {
     destroyAsteroids() {
         for (const asteroid of asteroids) {
             if (
-                distance(this.pos, asteroid.drawPos) <
+                distance(this.pos, {
+                    x: asteroid.drawPos.x + asteroid.size / 2,
+                    y: asteroid.drawPos.y + asteroid.size / 2,
+                }) <
                 asteroid.size / 2
             ) {
-                asteroid.remove();
+                asteroid.destroyed = true;
             }
         }
     }
