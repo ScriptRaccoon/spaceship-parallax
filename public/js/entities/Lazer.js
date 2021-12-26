@@ -24,12 +24,9 @@ export class Lazer {
         ctx.entity.globalAlpha = 0.8;
         ctx.entity.translate(this.pos.x, this.pos.y);
         ctx.entity.rotate(this.rotation);
-        ctx.entity.fillRect(
-            0,
-            -this.size.y / 2,
-            this.size.x,
-            this.size.y
-        );
+        ctx.entity.fillRect(0, -2, 40, 4);
+        ctx.entity.fillStyle = "white";
+        ctx.entity.fillRect(0, -0.5, 40, 1);
         ctx.entity.restore();
     }
 
