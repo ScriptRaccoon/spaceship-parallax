@@ -1,4 +1,8 @@
-import { Asteroid } from "./Asteroid.js";
+import {
+    Asteroid,
+    asteroids,
+    generateAsteroids,
+} from "./Asteroid.js";
 import {
     clearCanvas,
     canvas,
@@ -18,13 +22,11 @@ makeFullScreen(canvas.star3, 2);
 
 let stars;
 let ship;
-let asteroid;
 let gameRunning = false;
 
 preloadImages(() => {
     stars = new Stars();
     ship = new SpaceShip();
-    asteroid = new Asteroid({ pos: { x: 600, y: 600 } });
     stars.generate();
     stars.draw();
     drawLoadingScreen();
@@ -32,6 +34,7 @@ preloadImages(() => {
     window.addEventListener("keydown", (e) => {
         if (e.key === "Enter" && !gameRunning) {
             gameRunning = true;
+            generateAsteroids();
             loop();
         }
     });
@@ -39,9 +42,12 @@ preloadImages(() => {
 
 function loop() {
     clearCanvas("ship");
-    [...lazers, ship, asteroid].forEach((obj) => obj.update());
-    [...lazers, ship, asteroid].forEach((obj) => obj.draw());
+    [...lazers, ...asteroids, ship].forEach((obj) =>
+        obj.update(ship)
+    );
+    [...lazers, ...asteroids, ship].forEach((obj) => obj.draw());
     stars.update(ship);
+    console.log(asteroids.length);
     requestAnimationFrame(loop);
 }
 
