@@ -1,4 +1,5 @@
 import { canvas, ctx } from "./canvas.js";
+import { Lazer } from "./Lazer.js";
 
 export class SpaceShip {
     constructor(image) {
@@ -82,7 +83,11 @@ export class SpaceShip {
     }
 
     shoot() {
-        console.log("shoot!");
+        new Lazer({
+            pos: { ...this.pos },
+            initialVel: { ...this.posVel },
+            rotation: this.rotation,
+        });
     }
 
     boundToCanvas() {

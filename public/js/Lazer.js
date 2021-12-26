@@ -3,15 +3,15 @@ import { canvas, ctx } from "./canvas.js";
 export let lazers = [];
 
 export class Lazer {
-    constructor({ pos, vel, rotation }) {
+    constructor({ pos, initialVel, rotation }) {
         this.pos = pos;
         this.rotation = rotation;
-        const speed = 10;
+        this.speed = 15;
         this.vel = {
-            x: speed * Math.cos(rotation),
-            y: speed * Math.sin(rotation),
+            x: initialVel.x + this.speed * Math.cos(rotation),
+            y: initialVel.y + this.speed * Math.sin(rotation),
         };
-        this.size = { x: 40, y: 2 };
+        this.size = { x: 40, y: 3 };
         this.visible = true;
         lazers.push(this);
     }
