@@ -6,6 +6,7 @@ import { debounce } from "./helper.js";
 import { preloadImages } from "./images.js";
 import { Stars } from "./Stars.js";
 import {
+    drawGameover,
     drawIntroScreen,
     drawLoadingScreen,
     drawPause,
@@ -50,6 +51,11 @@ preloadImages(() => {
             makeCanvasesFullScreen();
             stars.generate();
             stars.draw();
+            if (ship.destroyed) {
+                drawGameover(ship.score);
+            } else if (!gameRunning) {
+                drawPause();
+            }
         }, 150)
     );
 
