@@ -1,18 +1,17 @@
 import { asteroids, Asteroid } from "./entities/Asteroid.js";
-import {
-    clearCanvas,
-    canvas,
-    makeFullScreen,
-    drawLoadingScreen,
-    drawGameover,
-    drawScore,
-    drawIntroScreen,
-} from "./canvas.js";
+import { clearCanvas, canvas, makeFullScreen } from "./canvas.js";
+
 import { debounce } from "./helper.js";
 import { preloadImages } from "./images.js";
 import { lazers } from "./entities/Lazer.js";
 import { SpaceShip } from "./entities/SpaceShip.js";
 import { Stars } from "./Stars.js";
+import {
+    drawGameover,
+    drawIntroScreen,
+    drawLoadingScreen,
+    drawScore,
+} from "./screens.js";
 
 makeFullScreen(canvas.entity);
 makeFullScreen(canvas.star1, 2);
