@@ -17,8 +17,8 @@ export class SpaceShip {
         this.rotation = 0;
         this.rotationVel = 0;
         this.rotationForce = 0;
-        this.maximalRotationForce = 0.1;
-        this.rotationFriction = 0.8;
+        this.maximalRotationForce = 0.03;
+        this.rotationFriction = 0.95;
         this.frames = {
             idle: 0,
             boost: 1,
