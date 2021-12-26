@@ -26,6 +26,7 @@ makeFullScreen(canvas.star3, 2);
 let stars;
 let ship;
 let gameRunning = false;
+let gameOver = false;
 
 drawIntroScreen();
 
@@ -37,14 +38,19 @@ preloadImages(() => {
     drawLoadingScreen();
 
     window.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") {
-            if (gameRunning) {
-                ship.reset();
-            } else {
-                gameRunning = true;
-                generateAsteroids();
-                loop();
-            }
+        switch (e.key) {
+            case "Enter":
+                if (gameOver) {
+                    gameOver = false;
+                    ship.reset();
+                } else if (gameRunning) {
+                    gameRunning = false;
+                } else {
+                    gameRunning = true;
+                    if (asteroids.length == 0) generateAsteroids();
+                    loop();
+                }
+                break;
         }
     });
 });
@@ -56,9 +62,12 @@ function loop() {
     );
     [...lazers, ...asteroids, ship].forEach((obj) => obj.draw());
     stars.update(ship);
-    if (ship.destroyed) drawGameover();
+    if (ship.destroyed) {
+        gameOver = true;
+        drawGameover();
+    }
     drawScore(ship.score);
-    requestAnimationFrame(loop);
+    if (gameRunning) requestAnimationFrame(loop);
 }
 
 window.addEventListener(

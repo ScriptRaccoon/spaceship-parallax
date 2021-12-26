@@ -43,7 +43,7 @@ export function drawLoadingScreen() {
         canvas.ship.height / 2
     );
     ctx.ship.fillText(
-        "Press Enter to start the game.",
+        "Press Enter to start/pause the game.",
         canvas.ship.width / 2,
         canvas.ship.height / 2 + 100
     );
