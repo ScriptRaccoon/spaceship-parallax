@@ -133,7 +133,7 @@ export class SpaceShip {
         ctx.ship.rotate(this.rotation);
         ctx.ship.drawImage(
             this.image,
-            this.frames[this.status] * this.size.x,
+            this.frames[this.status] * this.originalSize.x,
             0,
             this.originalSize.x,
             this.originalSize.y,

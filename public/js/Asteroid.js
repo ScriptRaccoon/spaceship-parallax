@@ -10,27 +10,20 @@ export function generateAsteroids(frequency = 300) {
 
 export class Asteroid {
     static SIZES = {
-        "Asteroid-A-08": 32,
-        "Asteroid-A-09": 128,
-        "Asteroid-A-10": 64,
-    };
-    static PAD = {
-        "Asteroid-A-08": 2,
-        "Asteroid-A-09": 3,
-        "Asteroid-A-10": 2,
+        s: 32,
+        m: 64,
+        l: 128,
     };
     static FRAME_COUNT = {
-        "Asteroid-A-08": 60,
-        "Asteroid-A-09": 120,
-        "Asteroid-A-10": 60,
+        s: 60,
+        m: 60,
+        l: 120,
     };
     constructor() {
         const side = randInt(0, 4);
-        this.type = randEl([
-            "Asteroid-A-08",
-            "Asteroid-A-09",
-            "Asteroid-A-10",
-        ]);
+        this.type = randEl(["s", "l", "m"]);
+        const name = "asteroid-" + this.type;
+        this.image = IMAGE[name];
         this.size = Asteroid.SIZES[this.type];
         this.frameCount = Asteroid.FRAME_COUNT[this.type];
         switch (side) {
@@ -95,16 +88,9 @@ export class Asteroid {
     draw() {
         ctx.ship.save();
         ctx.ship.translate(this.drawPos.x, this.drawPos.y);
-        const frame =
-            this.type +
-            "-" +
-            this.animationTimer
-                .toString()
-                .padStart(Asteroid.PAD[this.type], "0");
-        const image = IMAGE[frame];
         ctx.ship.drawImage(
-            image,
-            0,
+            this.image,
+            this.animationTimer * Asteroid.SIZES[this.type],
             0,
             Asteroid.SIZES[this.type],
             Asteroid.SIZES[this.type],
