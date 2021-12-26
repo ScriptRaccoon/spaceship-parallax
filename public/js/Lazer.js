@@ -59,12 +59,13 @@ export class Lazer {
         for (const asteroid of asteroids) {
             if (
                 distance(this.pos, {
-                    x: asteroid.drawPos.x + asteroid.size / 2,
-                    y: asteroid.drawPos.y + asteroid.size / 2,
+                    x: asteroid.drawPos.x,
+                    y: asteroid.drawPos.y,
                 }) <
                 asteroid.size / 2
             ) {
                 asteroid.destroyed = true;
+                this.remove();
             }
         }
     }
