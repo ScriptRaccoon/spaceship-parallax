@@ -1,4 +1,3 @@
-import { asteroids } from "./Asteroid.js";
 import { canvas, ctx } from "../canvas.js";
 import { IMAGE } from "../images.js";
 import { Lazer } from "./Lazer.js";
@@ -6,8 +5,7 @@ import { Lazer } from "./Lazer.js";
 export class SpaceShip {
     constructor() {
         this.image = IMAGE.ship;
-        this.originalSize = { x: 100, y: 100 };
-        this.size = { ...this.originalSize };
+        this.size = { x: 100, y: 100 };
         this.status = "idle";
         this.pos = {
             x: canvas.entity.width / 2,
@@ -31,6 +29,7 @@ export class SpaceShip {
         };
         this.destroyed = false;
         this.score = 0;
+        this.alpha = 1;
         this.addControls();
     }
 
@@ -84,10 +83,8 @@ export class SpaceShip {
         this.rotationVel *= this.rotationFriction;
 
         if (this.destroyed) {
-            this.size.x *= 0.95;
-            this.size.y *= 0.95;
-            if (this.size.x <= 1) this.size.x = 0;
-            if (this.size.y <= 1) this.size.y = 0;
+            this.alpha *= 0.95;
+            if (this.alpha <= 0.01) this.alpha = 0;
         }
 
         this.handleTinyVel();
@@ -129,14 +126,15 @@ export class SpaceShip {
 
     draw() {
         ctx.entity.save();
+        ctx.entity.globalAlpha = this.alpha;
         ctx.entity.translate(this.pos.x, this.pos.y);
         ctx.entity.rotate(this.rotation);
         ctx.entity.drawImage(
             this.image,
-            this.frames[this.status] * this.originalSize.x,
+            this.frames[this.status] * this.size.x,
             0,
-            this.originalSize.x,
-            this.originalSize.y,
+            this.size.x,
+            this.size.y,
             -this.size.x / 2,
             -this.size.y / 2,
             this.size.x,
@@ -172,14 +170,11 @@ export class SpaceShip {
 
     reset() {
         this.score = 0;
-        for (const asteroid of asteroids) {
-            asteroid.remove();
-        }
         this.destroyed = false;
         this.status = "idle";
-        this.size = { ...this.originalSize };
         this.rotation = 0;
         this.rotationVel = 0;
         this.posVel = { x: 0, y: 0 };
+        this.alpha = 1;
     }
 }

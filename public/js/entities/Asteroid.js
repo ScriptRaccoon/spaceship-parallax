@@ -139,6 +139,7 @@ export class Asteroid {
                 ship.size.x / 2 + this.size / 2
         ) {
             ship.destroyed = true;
+            ship.rotationForce = 0.2;
         }
     }
 }

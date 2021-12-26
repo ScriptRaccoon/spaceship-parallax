@@ -38,6 +38,9 @@ preloadImages(() => {
             case "Enter":
                 if (gameOver) {
                     gameOver = false;
+                    for (const asteroid of asteroids) {
+                        asteroid.remove();
+                    }
                     ship.reset();
                 } else if (gameRunning) {
                     gameRunning = false;
