@@ -32,5 +32,25 @@ canvas {
 }
 
 #messageCanvas {
+    z-index: 30;
+}
+
+#overlay {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(
+            to bottom,
+            black,
+            transparent 15%,
+            transparent 85%,
+            black
+        ),
+        linear-gradient(
+            to right,
+            black,
+            transparent 10%,
+            transparent 90%,
+            black
+        );
     z-index: 20;
 }
