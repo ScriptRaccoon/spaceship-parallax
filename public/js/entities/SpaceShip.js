@@ -35,6 +35,10 @@ export class SpaceShip {
         this.score = 0;
         this.alpha = 1;
 
+        this.scoreDisplay = document.getElementById("scoreDisplay");
+        this.scoreDisplayEnd =
+            document.getElementById("scoreDisplayEnd");
+
         this.addControls();
     }
 
@@ -104,18 +108,11 @@ export class SpaceShip {
         );
 
         ctx.entity.restore();
-
-        this.drawScore();
     }
 
-    drawScore() {
-        ctx.entity.save();
-        ctx.entity.textAlign = "left";
-        ctx.entity.font = "20px Consolas";
-        ctx.entity.fillStyle = "white";
-        ctx.entity.globalAlpha = 0.8;
-        ctx.entity.fillText(`Score: ${this.score}`, 15, 25);
-        ctx.entity.restore();
+    showScore() {
+        this.scoreDisplay.innerText = `Score: ${this.score}`;
+        this.scoreDisplayEnd.innerText = `Score: ${this.score}`;
     }
 
     addControls() {
@@ -179,6 +176,7 @@ export class SpaceShip {
 
     reset() {
         this.score = 0;
+        this.showScore();
         this.destroyed = false;
         this.status = "idle";
         this.rotation = 0;

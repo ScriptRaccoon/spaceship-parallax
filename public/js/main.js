@@ -5,18 +5,13 @@ import { clearCanvas, makeCanvasesFullScreen } from "./canvas.js";
 import { debounce } from "./helper.js";
 import { preloadImages } from "./images.js";
 import { Stars } from "./Stars.js";
-import {
-    drawGameover,
-    drawIntroScreen,
-    drawLoadingScreen,
-    drawPause,
-} from "./messages.js";
+import { hideScreen, showScreen } from "./screens.js";
 
 makeCanvasesFullScreen();
-drawIntroScreen();
+showScreen("loading");
 
 preloadImages(() => {
-    drawLoadingScreen();
+    showScreen("start");
 
     const stars = new Stars();
     const ship = new SpaceShip();
@@ -29,17 +24,18 @@ preloadImages(() => {
     window.addEventListener("keydown", (e) => {
         if (e.key == "Enter") {
             if (ship.destroyed) {
-                clearCanvas("message");
+                hideScreen();
                 Asteroid.removeAll();
                 ship.reset();
             } else if (gameRunning) {
+                showScreen("pause");
                 gameRunning = false;
-                drawPause();
                 Asteroid.stopGenerating();
-            } else {
+            } else if (!gameRunning) {
+                hideScreen();
                 gameRunning = true;
                 Asteroid.startGenerating();
-                clearCanvas("message");
+                ship.showScore();
                 gameLoop();
             }
         }
@@ -51,11 +47,6 @@ preloadImages(() => {
             makeCanvasesFullScreen();
             stars.generate();
             stars.draw();
-            if (ship.destroyed) {
-                drawGameover(ship.score);
-            } else if (!gameRunning) {
-                drawPause();
-            }
         }, 150)
     );
 
@@ -67,6 +58,6 @@ preloadImages(() => {
         [...Lazer.list, ...Asteroid.list, ship].forEach((obj) =>
             obj.draw()
         );
-        gameRunning ? requestAnimationFrame(gameLoop) : drawPause();
+        if (gameRunning) requestAnimationFrame(gameLoop);
     }
 });

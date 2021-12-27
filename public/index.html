@@ -24,8 +24,25 @@
     <canvas id="starCanvas2"></canvas>
     <canvas id="starCanvas3"></canvas>
     <canvas id="entityCanvas"></canvas>
-    <canvas id="messageCanvas"></canvas>
     <div id="overlay"></div>
+    <div class="screen visible" id="loadingScreen">
+        <p>Game is loading...</p>
+    </div>
+    <div class="screen" id="startScreen">
+        <h1>Space Parallax</h1>
+        <p>Use the arrow keys to navigate the spaceship.</p>
+        <p>Use the Space key to shoot lazers.</p>
+        <p>Press Enter to start/pause the game.</p>
+    </div>    
+    <div class="screen" id="pauseScreen">
+        Paused
+    </div>
+    <div class="screen" id="gameoverScreen">
+        <h2>Gameover</h2>
+        <h3 id="scoreDisplayEnd"></h3>
+        <p>Press Enter to restart the game.</p>
+    </div>
+    <div id="scoreDisplay"></div>
     <script src="./js/main.js" type="module"></script>
 </body>
 </html>
