@@ -1,3 +1,5 @@
+/* general */
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -12,6 +14,8 @@ body {
     font-family: Consolas, monospace;
     color: white;
 }
+
+/* canvases */
 
 canvas {
     position: absolute;
@@ -33,6 +37,8 @@ canvas {
     z-index: 10;
 }
 
+/* overlay */
+
 #overlay {
     position: fixed;
     inset: 0;
@@ -53,10 +59,7 @@ canvas {
     z-index: 20;
 }
 
-#scoreCanvas {
-    border: 5px solid red;
-    z-index: 30;
-}
+/* screens */
 
 .screen {
     position: fixed;
@@ -66,7 +69,6 @@ canvas {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-
     font-size: 30px;
 }
 
@@ -88,6 +90,7 @@ h2 {
 h1 {
     color: yellow;
     margin-bottom: 30px;
+    text-shadow: 0px 0px 20px #fff6;
 }
 
 h2 {
@@ -97,6 +100,8 @@ h2 {
 h3 {
     margin-bottom: 20px;
 }
+
+/* score */
 
 #scoreDisplay {
     position: fixed;
