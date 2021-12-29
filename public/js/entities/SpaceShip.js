@@ -1,10 +1,9 @@
 import { canvas, ctx } from "../canvas.js";
-import { IMAGE } from "../images.js";
-import { Lazer } from "./Lazer.js";
 
 export class SpaceShip {
     constructor() {
-        this.image = IMAGE.ship;
+        this.image = new Image();
+        this.image.src = "./img/ship.png";
         this.size = { x: 100, y: 100 };
 
         this.pos = {
@@ -31,14 +30,6 @@ export class SpaceShip {
             turn_left: 4,
         };
 
-        this.destroyed = false;
-        this.score = 0;
-        this.alpha = 1;
-
-        this.scoreDisplay = document.getElementById("scoreDisplay");
-        this.scoreDisplayEnd =
-            document.getElementById("scoreDisplayEnd");
-
         this.addControls();
     }
 
@@ -56,11 +47,6 @@ export class SpaceShip {
         this.rotationForce = 0;
         this.rotation += this.rotationVel;
         this.rotationVel *= this.rotationFriction;
-
-        if (this.destroyed) {
-            this.alpha *= 0.95;
-            if (this.alpha <= 0.01) this.alpha = 0;
-        }
 
         this.handleTinyVel();
         this.boundToCanvas();
@@ -110,11 +96,6 @@ export class SpaceShip {
         ctx.entity.restore();
     }
 
-    showScore() {
-        this.scoreDisplay.innerText = `Score: ${this.score}`;
-        this.scoreDisplayEnd.innerText = `Score: ${this.score}`;
-    }
-
     addControls() {
         window.addEventListener("keydown", (e) => {
             switch (e.key) {
@@ -129,9 +110,6 @@ export class SpaceShip {
                     break;
                 case "ArrowRight":
                     this.turn({ direction: "right" });
-                    break;
-                case " ":
-                    this.shoot();
                     break;
             }
         });
@@ -148,40 +126,18 @@ export class SpaceShip {
         });
     }
 
-    shoot() {
-        if (this.destroyed) return;
-        new Lazer({
-            pos: { ...this.pos },
-            initialVel: { ...this.vel },
-            rotation: this.rotation,
-        });
-    }
-
     turn({ direction }) {
-        if (this.destroyed) return;
         this.status = `turn_${direction}`;
         const sign = direction == "right" ? +1 : -1;
         this.rotationForce = sign * this.rotationMaximalForce;
     }
 
     boost({ direction }) {
-        if (this.destroyed) return;
         this.status = `boost_${direction}`;
         const sign = direction == "forwards" ? +1 : -1;
         this.force = {
             x: sign * this.maximalForce * Math.cos(this.rotation),
             y: sign * this.maximalForce * Math.sin(this.rotation),
         };
-    }
-
-    reset() {
-        this.score = 0;
-        this.showScore();
-        this.destroyed = false;
-        this.status = "idle";
-        this.rotation = 0;
-        this.rotationVel = 0;
-        this.vel = { x: 0, y: 0 };
-        this.alpha = 1;
     }
 }
