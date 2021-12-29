@@ -1,15 +1,14 @@
 import { canvas, ctx } from "../canvas.js";
-import { IMAGE } from "../images.js";
-import { Lazer } from "./Lazer.js";
 
 export class SpaceShip {
     constructor() {
-        this.image = IMAGE.ship;
+        this.image = new Image();
+        this.image.src = "./img/ship.png";
         this.size = { x: 100, y: 100 };
 
         this.pos = {
-            x: canvas.entity.width / 2,
-            y: canvas.entity.height / 2,
+            x: canvas.width / 2,
+            y: canvas.height / 2,
         };
         this.vel = { x: 0.6, y: 0 };
         this.force = { x: 0, y: 0 };
@@ -31,14 +30,6 @@ export class SpaceShip {
             turn_left: 4,
         };
 
-        this.destroyed = false;
-        this.score = 0;
-        this.alpha = 1;
-
-        this.scoreDisplay = document.getElementById("scoreDisplay");
-        this.scoreDisplayEnd =
-            document.getElementById("scoreDisplayEnd");
-
         this.addControls();
     }
 
@@ -56,11 +47,6 @@ export class SpaceShip {
         this.rotationForce = 0;
         this.rotation += this.rotationVel;
         this.rotationVel *= this.rotationFriction;
-
-        if (this.destroyed) {
-            this.alpha *= 0.95;
-            if (this.alpha <= 0.01) this.alpha = 0;
-        }
 
         this.handleTinyVel();
         this.boundToCanvas();
@@ -80,22 +66,15 @@ export class SpaceShip {
     }
 
     boundToCanvas() {
-        this.pos.x = Math.max(
-            0,
-            Math.min(canvas.entity.width, this.pos.x)
-        );
-        this.pos.y = Math.max(
-            0,
-            Math.min(canvas.entity.height, this.pos.y)
-        );
+        this.pos.x = Math.max(0, Math.min(canvas.width, this.pos.x));
+        this.pos.y = Math.max(0, Math.min(canvas.height, this.pos.y));
     }
 
     draw() {
-        ctx.entity.save();
-        ctx.entity.globalAlpha = this.alpha;
-        ctx.entity.translate(this.pos.x, this.pos.y);
-        ctx.entity.rotate(this.rotation);
-        ctx.entity.drawImage(
+        ctx.save();
+        ctx.translate(this.pos.x, this.pos.y);
+        ctx.rotate(this.rotation);
+        ctx.drawImage(
             this.image,
             this.frames[this.status] * this.size.x,
             0,
@@ -107,12 +86,7 @@ export class SpaceShip {
             this.size.y
         );
 
-        ctx.entity.restore();
-    }
-
-    showScore() {
-        this.scoreDisplay.innerText = `Score: ${this.score}`;
-        this.scoreDisplayEnd.innerText = `Score: ${this.score}`;
+        ctx.restore();
     }
 
     addControls() {
@@ -130,9 +104,6 @@ export class SpaceShip {
                 case "ArrowRight":
                     this.turn({ direction: "right" });
                     break;
-                case " ":
-                    this.shoot();
-                    break;
             }
         });
         window.addEventListener("keyup", (e) => {
@@ -145,15 +116,6 @@ export class SpaceShip {
             if (keys.includes(e.key)) {
                 this.status = "idle";
             }
-        });
-    }
-
-    shoot() {
-        if (this.destroyed) return;
-        new Lazer({
-            pos: { ...this.pos },
-            initialVel: { ...this.vel },
-            rotation: this.rotation,
         });
     }
 
@@ -172,16 +134,5 @@ export class SpaceShip {
             x: sign * this.maximalForce * Math.cos(this.rotation),
             y: sign * this.maximalForce * Math.sin(this.rotation),
         };
-    }
-
-    reset() {
-        this.score = 0;
-        this.showScore();
-        this.destroyed = false;
-        this.status = "idle";
-        this.rotation = 0;
-        this.rotationVel = 0;
-        this.vel = { x: 0, y: 0 };
-        this.alpha = 1;
     }
 }
