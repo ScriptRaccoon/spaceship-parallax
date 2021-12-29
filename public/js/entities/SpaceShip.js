@@ -22,6 +22,7 @@ export class SpaceShip {
         this.rotationFriction = 0.95;
 
         this.status = "idle";
+
         this.frames = {
             idle: 0,
             boost_forwards: 1,
@@ -120,14 +121,12 @@ export class SpaceShip {
     }
 
     turn({ direction }) {
-        if (this.destroyed) return;
         this.status = `turn_${direction}`;
         const sign = direction == "right" ? +1 : -1;
         this.rotationForce = sign * this.rotationMaximalForce;
     }
 
     boost({ direction }) {
-        if (this.destroyed) return;
         this.status = `boost_${direction}`;
         const sign = direction == "forwards" ? +1 : -1;
         this.force = {
