@@ -12,7 +12,7 @@ export class SpaceShip {
         };
         this.vel = { x: 0.6, y: 0 };
         this.force = { x: 0, y: 0 };
-        this.maximalForce = 0.8;
+        this.maximalForce = 2;
         this.friction = 0.99;
 
         this.rotation = 0;
