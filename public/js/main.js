@@ -5,41 +5,19 @@ import { clearCanvas, makeCanvasesFullScreen } from "./canvas.js";
 import { debounce } from "./helper.js";
 import { preloadImages } from "./images.js";
 import { Stars } from "./Stars.js";
-import { hideScreen, showScreen } from "./screens.js";
 
 makeCanvasesFullScreen();
-showScreen("loading");
 
 preloadImages(() => {
-    showScreen("start");
-
     const stars = new Stars();
     const ship = new SpaceShip();
-
-    let gameRunning = false;
 
     stars.generate();
     stars.draw();
 
-    window.addEventListener("keydown", (e) => {
-        if (e.key == "Enter") {
-            if (ship.destroyed) {
-                hideScreen();
-                Asteroid.removeAll();
-                ship.reset();
-            } else if (gameRunning) {
-                showScreen("pause");
-                gameRunning = false;
-                Asteroid.stopGenerating();
-            } else if (!gameRunning) {
-                hideScreen();
-                gameRunning = true;
-                Asteroid.startGenerating();
-                ship.showScore();
-                gameLoop();
-            }
-        }
-    });
+    gameLoop();
+
+    Asteroid.startGenerating();
 
     window.addEventListener(
         "resize",
@@ -58,6 +36,6 @@ preloadImages(() => {
         [...Lazer.list, ...Asteroid.list, ship].forEach((obj) =>
             obj.draw()
         );
-        if (gameRunning) requestAnimationFrame(gameLoop);
+        requestAnimationFrame(gameLoop);
     }
 });

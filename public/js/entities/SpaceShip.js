@@ -112,7 +112,6 @@ export class SpaceShip {
 
     showScore() {
         this.scoreDisplay.innerText = `Score: ${this.score}`;
-        this.scoreDisplayEnd.innerText = `Score: ${this.score}`;
     }
 
     addControls() {

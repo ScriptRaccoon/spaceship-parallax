@@ -1,7 +1,6 @@
 import { canvas, ctx } from "../canvas.js";
 import { distance, randInt, randEl } from "../helper.js";
 import { IMAGE } from "../images.js";
-import { showScreen } from "../screens.js";
 
 export class Asteroid {
     static list = [];
@@ -35,10 +34,6 @@ export class Asteroid {
             () => new Asteroid(),
             frequency
         );
-    }
-
-    static stopGenerating() {
-        clearInterval(Asteroid.interval);
     }
 
     constructor() {
@@ -149,7 +144,10 @@ export class Asteroid {
         ) {
             ship.destroyed = true;
             ship.rotationForce = randEl([+1, -1]) * 0.2;
-            showScreen("gameover");
+            setTimeout(() => {
+                ship.reset();
+                Asteroid.removeAll();
+            }, 2000);
         }
     }
 }
