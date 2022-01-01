@@ -55,7 +55,7 @@ export class Asteroid {
                 break;
             case "right":
                 this.pos = {
-                    x: canvas.star1.width,
+                    x: canvas.star1.width + this.size / 2,
                     y: randInt(0, canvas.star1.height),
                 };
                 this.vel = { x: -randInt(1, 4), y: randInt(-4, 5) };
@@ -70,7 +70,7 @@ export class Asteroid {
             case "bottom":
                 this.pos = {
                     x: randInt(0, canvas.star1.width),
-                    y: canvas.star1.height,
+                    y: canvas.star1.height + this.size / 2,
                 };
                 this.vel = { x: randInt(-4, 5), y: -randInt(1, 4) };
                 break;
