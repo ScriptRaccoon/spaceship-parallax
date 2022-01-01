@@ -36,8 +36,6 @@ export class SpaceShip {
         this.alpha = 1;
 
         this.scoreDisplay = document.getElementById("scoreDisplay");
-        this.scoreDisplayEnd =
-            document.getElementById("scoreDisplayEnd");
 
         this.addControls();
     }
