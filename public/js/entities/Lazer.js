@@ -13,7 +13,6 @@ export class Lazer {
             x: initialVel.x + this.speed * Math.cos(rotation),
             y: initialVel.y + this.speed * Math.sin(rotation),
         };
-        this.size = { x: 40, y: 3 };
         Lazer.list.push(this);
     }
 
