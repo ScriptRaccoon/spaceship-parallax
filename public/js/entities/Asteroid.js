@@ -23,17 +23,12 @@ export class Asteroid {
         l: 1,
     };
 
-    static interval = null;
-
     static removeAll() {
         Asteroid.list = [];
     }
 
     static startGenerating(frequency = 300) {
-        Asteroid.interval = setInterval(
-            () => new Asteroid(),
-            frequency
-        );
+        setInterval(() => new Asteroid(), frequency);
     }
 
     constructor() {
