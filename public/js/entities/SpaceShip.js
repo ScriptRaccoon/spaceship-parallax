@@ -11,7 +11,7 @@ export class SpaceShip {
             x: canvas.entity.width / 2,
             y: canvas.entity.height / 2,
         };
-        this.vel = { x: 0.6, y: 0 };
+        this.vel = { x: 0, y: 0 };
         this.force = { x: 0, y: 0 };
         this.maximalForce = 0.8;
         this.friction = 0.99;
