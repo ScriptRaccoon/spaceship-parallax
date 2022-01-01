@@ -12,6 +12,8 @@ preloadImages(() => {
     const stars = new Stars();
     const ship = new SpaceShip();
 
+    ship.showScore();
+
     stars.generate();
     stars.draw();
 
