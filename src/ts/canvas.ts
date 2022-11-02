@@ -1,8 +1,4 @@
-export type canvasKey =
-	| "entityCanvas"
-	| "starCanvas1"
-	| "starCanvas2"
-	| "starCanvas3";
+export type canvasKey = "entity" | "star1" | "star2" | "star3";
 
 export const canvas = {
 	entity: document.getElementById(
@@ -20,10 +16,12 @@ export const canvas = {
 };
 
 export const ctx = {
-	entity: canvas.entity.getContext("2d"),
-	star1: canvas.star1.getContext("2d"),
-	star2: canvas.star2.getContext("2d"),
-	star3: canvas.star3.getContext("2d"),
+	entity: canvas.entity.getContext(
+		"2d"
+	) as CanvasRenderingContext2D,
+	star1: canvas.star1.getContext("2d") as CanvasRenderingContext2D,
+	star2: canvas.star2.getContext("2d") as CanvasRenderingContext2D,
+	star3: canvas.star3.getContext("2d") as CanvasRenderingContext2D,
 };
 
 function makeCanvasFullScreen(
