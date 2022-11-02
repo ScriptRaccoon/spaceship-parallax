@@ -1,28 +1,18 @@
 export type canvasKey = "entity" | "star1" | "star2" | "star3";
 
 export const canvas = {
-	entity: document.getElementById(
-		"entityCanvas"
-	) as HTMLCanvasElement,
-	star1: document.getElementById(
-		"starCanvas1"
-	) as HTMLCanvasElement,
-	star2: document.getElementById(
-		"starCanvas2"
-	) as HTMLCanvasElement,
-	star3: document.getElementById(
-		"starCanvas3"
-	) as HTMLCanvasElement,
-};
+	entity: document.getElementById("entityCanvas"),
+	star1: document.getElementById("starCanvas1"),
+	star2: document.getElementById("starCanvas2"),
+	star3: document.getElementById("starCanvas3"),
+} as Record<canvasKey, HTMLCanvasElement>;
 
 export const ctx = {
-	entity: canvas.entity.getContext(
-		"2d"
-	) as CanvasRenderingContext2D,
-	star1: canvas.star1.getContext("2d") as CanvasRenderingContext2D,
-	star2: canvas.star2.getContext("2d") as CanvasRenderingContext2D,
-	star3: canvas.star3.getContext("2d") as CanvasRenderingContext2D,
-};
+	entity: canvas.entity.getContext("2d"),
+	star1: canvas.star1.getContext("2d"),
+	star2: canvas.star2.getContext("2d"),
+	star3: canvas.star3.getContext("2d"),
+} as Record<canvasKey, CanvasRenderingContext2D>;
 
 function makeCanvasFullScreen(
 	canvasEl: HTMLCanvasElement,
