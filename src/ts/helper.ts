@@ -1,21 +1,26 @@
-export function debounce(fn, delay) {
-    let id;
-    return (...args) => {
-        if (id) clearTimeout(id);
-        id = setTimeout(() => {
-            fn(...args);
-        }, delay);
-    };
+export interface coordinate {
+	x: number;
+	y: number;
 }
 
-export function randInt(a, b) {
-    return a + Math.floor((b - a) * Math.random());
+export function debounce(fn: () => void, delay: number) {
+	let id: number;
+	return () => {
+		if (id) clearTimeout(id);
+		id = window.setTimeout(() => {
+			fn();
+		}, delay);
+	};
 }
 
-export function randEl(list) {
-    return list[randInt(0, list.length)];
+export function randInt(a: number, b: number) {
+	return a + Math.floor((b - a) * Math.random());
 }
 
-export function distance(u, v) {
-    return Math.sqrt(Math.pow(u.x - v.x, 2) + Math.pow(u.y - v.y, 2));
+export function randEl<T>(list: T[]) {
+	return list[randInt(0, list.length)];
+}
+
+export function distance(u: coordinate, v: coordinate) {
+	return Math.sqrt((u.x - v.x) ** 2 + (u.y - v.y) ** 2);
 }
