@@ -4,10 +4,10 @@
   "description": "Navigate a spaceship through space",
   "main": "src/js/main.js",
   "scripts": {
-    "build-js": "esbuild src/js/main.js --bundle --minify --sourcemap --outfile=public/build/bundle.js",
+    "build-js": "esbuild src/ts/main.ts --bundle --minify --sourcemap --outfile=public/build/bundle.js",
     "build-css": "esbuild src/css/style.css --bundle --minify --sourcemap --outfile=public/build/bundle.css",
     "build": "npm-run-all --parallel build-js build-css",
-    "watch-js": "esbuild src/js/main.js --bundle --watch --sourcemap --outfile=public/build/bundle.js",
+    "watch-js": "esbuild src/ts/main.ts --bundle --watch --sourcemap --outfile=public/build/bundle.js",
     "watch-css": "esbuild src/css/style.css --bundle --watch --sourcemap --outfile=public/build/bundle.css",
     "dev": "npm-run-all --parallel watch-js watch-css"
   },
