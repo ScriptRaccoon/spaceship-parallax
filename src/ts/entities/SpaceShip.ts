@@ -1,187 +1,216 @@
-import { canvas, ctx } from "../canvas.js";
-import { IMAGE } from "../images.js";
-import { Lazer } from "./Lazer.js";
+import { canvas, ctx } from "../canvas";
+import { coordinate } from "../helper";
+import { IMAGE } from "../images";
+import { Lazer } from "./Lazer";
+
+type turnDirection = "left" | "right";
+type boostDirection = "forwards" | "backwards";
+
+type shipStatus =
+	| "idle"
+	| `turn_${turnDirection}`
+	| `boost_${boostDirection}`;
 
 export class SpaceShip {
-    constructor() {
-        this.image = IMAGE.ship;
-        this.size = { x: 100, y: 100 };
+	image: HTMLImageElement;
+	size: coordinate;
+	pos: coordinate;
+	vel: coordinate;
+	force: coordinate;
+	maximalForce: number;
+	friction: number;
+	rotation: number;
+	rotationVel: number;
+	rotationForce: number;
+	rotationMaximalForce: number;
+	rotationFriction: number;
+	status: shipStatus;
+	frames: Record<shipStatus, number>;
+	destroyed: boolean;
+	score: number;
+	alpha: number;
+	scoreDisplay: HTMLElement;
+	scoreDisplayEnd: HTMLElement;
 
-        this.pos = {
-            x: canvas.entity.width / 2,
-            y: canvas.entity.height / 2,
-        };
-        this.vel = { x: 0.6, y: 0 };
-        this.force = { x: 0, y: 0 };
-        this.maximalForce = 0.8;
-        this.friction = 0.99;
+	constructor() {
+		this.image = IMAGE.ship;
+		this.size = { x: 100, y: 100 };
 
-        this.rotation = 0;
-        this.rotationVel = 0;
-        this.rotationForce = 0;
-        this.rotationMaximalForce = 0.03;
-        this.rotationFriction = 0.95;
+		this.pos = {
+			x: canvas.entity.width / 2,
+			y: canvas.entity.height / 2,
+		};
+		this.vel = { x: 0.6, y: 0 };
+		this.force = { x: 0, y: 0 };
+		this.maximalForce = 0.8;
+		this.friction = 0.99;
 
-        this.status = "idle";
-        this.frames = {
-            idle: 0,
-            boost_forwards: 1,
-            boost_backwards: 2,
-            turn_right: 3,
-            turn_left: 4,
-        };
+		this.rotation = 0;
+		this.rotationVel = 0;
+		this.rotationForce = 0;
+		this.rotationMaximalForce = 0.03;
+		this.rotationFriction = 0.95;
 
-        this.destroyed = false;
-        this.score = 0;
-        this.alpha = 1;
+		this.status = "idle";
+		this.frames = {
+			idle: 0,
+			boost_forwards: 1,
+			boost_backwards: 2,
+			turn_right: 3,
+			turn_left: 4,
+		};
 
-        this.scoreDisplay = document.getElementById("scoreDisplay");
-        this.scoreDisplayEnd =
-            document.getElementById("scoreDisplayEnd");
+		this.destroyed = false;
+		this.score = 0;
+		this.alpha = 1;
 
-        this.addControls();
-    }
+		this.scoreDisplay = document.getElementById("scoreDisplay")!;
+		this.scoreDisplayEnd =
+			document.getElementById("scoreDisplayEnd")!;
 
-    update() {
-        this.vel.x += this.force.x;
-        this.vel.y += this.force.y;
-        this.force.x = 0;
-        this.force.y = 0;
-        this.pos.x += this.vel.x;
-        this.pos.y += this.vel.y;
-        this.vel.x *= this.friction;
-        this.vel.y *= this.friction;
+		this.addControls();
+	}
 
-        this.rotationVel += this.rotationForce;
-        this.rotationForce = 0;
-        this.rotation += this.rotationVel;
-        this.rotationVel *= this.rotationFriction;
+	update() {
+		this.vel.x += this.force.x;
+		this.vel.y += this.force.y;
+		this.force.x = 0;
+		this.force.y = 0;
+		this.pos.x += this.vel.x;
+		this.pos.y += this.vel.y;
+		this.vel.x *= this.friction;
+		this.vel.y *= this.friction;
 
-        if (this.destroyed) {
-            this.alpha *= 0.95;
-            if (this.alpha <= 0.01) this.alpha = 0;
-        }
+		this.rotationVel += this.rotationForce;
+		this.rotationForce = 0;
+		this.rotation += this.rotationVel;
+		this.rotationVel *= this.rotationFriction;
 
-        this.handleTinyVel();
-        this.boundToCanvas();
-    }
+		if (this.destroyed) {
+			this.alpha *= 0.95;
+			if (this.alpha <= 0.01) this.alpha = 0;
+		}
 
-    handleTinyVel(threshold = 0.01) {
-        if (Math.abs(this.vel.x) < threshold) {
-            this.vel.x = 0;
-        }
-        if (Math.abs(this.vel.y) < threshold) {
-            this.vel.y = 0;
-        }
+		this.handleTinyVel();
+		this.boundToCanvas();
+	}
 
-        if (Math.abs(this.rotationVel) < threshold) {
-            this.rotationVel = 0;
-        }
-    }
+	handleTinyVel(threshold: number = 0.01) {
+		if (Math.abs(this.vel.x) < threshold) {
+			this.vel.x = 0;
+		}
+		if (Math.abs(this.vel.y) < threshold) {
+			this.vel.y = 0;
+		}
 
-    boundToCanvas() {
-        this.pos.x = Math.max(
-            0,
-            Math.min(canvas.entity.width, this.pos.x)
-        );
-        this.pos.y = Math.max(
-            0,
-            Math.min(canvas.entity.height, this.pos.y)
-        );
-    }
+		if (Math.abs(this.rotationVel) < threshold) {
+			this.rotationVel = 0;
+		}
+	}
 
-    draw() {
-        ctx.entity.save();
-        ctx.entity.globalAlpha = this.alpha;
-        ctx.entity.translate(this.pos.x, this.pos.y);
-        ctx.entity.rotate(this.rotation);
-        ctx.entity.drawImage(
-            this.image,
-            this.frames[this.status] * this.size.x,
-            0,
-            this.size.x,
-            this.size.y,
-            -this.size.x / 2,
-            -this.size.y / 2,
-            this.size.x,
-            this.size.y
-        );
+	boundToCanvas() {
+		this.pos.x = Math.max(
+			0,
+			Math.min(canvas.entity.width, this.pos.x)
+		);
+		this.pos.y = Math.max(
+			0,
+			Math.min(canvas.entity.height, this.pos.y)
+		);
+	}
 
-        ctx.entity.restore();
-    }
+	draw() {
+		ctx.entity.save();
+		ctx.entity.globalAlpha = this.alpha;
+		ctx.entity.translate(this.pos.x, this.pos.y);
+		ctx.entity.rotate(this.rotation);
+		ctx.entity.drawImage(
+			this.image,
+			this.frames[this.status] * this.size.x,
+			0,
+			this.size.x,
+			this.size.y,
+			-this.size.x / 2,
+			-this.size.y / 2,
+			this.size.x,
+			this.size.y
+		);
 
-    showScore() {
-        this.scoreDisplay.innerText = `Score: ${this.score}`;
-        this.scoreDisplayEnd.innerText = `Score: ${this.score}`;
-    }
+		ctx.entity.restore();
+	}
 
-    addControls() {
-        window.addEventListener("keydown", (e) => {
-            switch (e.key) {
-                case "ArrowUp":
-                    this.boost({ direction: "forwards" });
-                    break;
-                case "ArrowDown":
-                    this.boost({ direction: "backwards" });
-                    break;
-                case "ArrowLeft":
-                    this.turn({ direction: "left" });
-                    break;
-                case "ArrowRight":
-                    this.turn({ direction: "right" });
-                    break;
-                case " ":
-                    this.shoot();
-                    break;
-            }
-        });
-        window.addEventListener("keyup", (e) => {
-            const keys = [
-                "ArrowLeft",
-                "ArrowRight",
-                "ArrowUp",
-                "ArrowDown",
-            ];
-            if (keys.includes(e.key)) {
-                this.status = "idle";
-            }
-        });
-    }
+	showScore() {
+		this.scoreDisplay.innerText = `Score: ${this.score}`;
+		this.scoreDisplayEnd.innerText = `Score: ${this.score}`;
+	}
 
-    shoot() {
-        if (this.destroyed) return;
-        new Lazer({
-            pos: { ...this.pos },
-            initialVel: { ...this.vel },
-            rotation: this.rotation,
-        });
-    }
+	addControls() {
+		window.addEventListener("keydown", (e) => {
+			switch (e.key) {
+				case "ArrowUp":
+					this.boost({ direction: "forwards" });
+					break;
+				case "ArrowDown":
+					this.boost({ direction: "backwards" });
+					break;
+				case "ArrowLeft":
+					this.turn({ direction: "left" });
+					break;
+				case "ArrowRight":
+					this.turn({ direction: "right" });
+					break;
+				case " ":
+					this.shoot();
+					break;
+			}
+		});
+		window.addEventListener("keyup", (e) => {
+			const keys = [
+				"ArrowLeft",
+				"ArrowRight",
+				"ArrowUp",
+				"ArrowDown",
+			];
+			if (keys.includes(e.key)) {
+				this.status = "idle";
+			}
+		});
+	}
 
-    turn({ direction }) {
-        if (this.destroyed) return;
-        this.status = `turn_${direction}`;
-        const sign = direction == "right" ? +1 : -1;
-        this.rotationForce = sign * this.rotationMaximalForce;
-    }
+	shoot() {
+		if (this.destroyed) return;
+		new Lazer({
+			pos: { ...this.pos },
+			initialVel: { ...this.vel },
+			rotation: this.rotation,
+		});
+	}
 
-    boost({ direction }) {
-        if (this.destroyed) return;
-        this.status = `boost_${direction}`;
-        const sign = direction == "forwards" ? +1 : -1;
-        this.force = {
-            x: sign * this.maximalForce * Math.cos(this.rotation),
-            y: sign * this.maximalForce * Math.sin(this.rotation),
-        };
-    }
+	turn({ direction }: { direction: turnDirection }) {
+		if (this.destroyed) return;
+		this.status = `turn_${direction}`;
+		const sign = direction == "right" ? +1 : -1;
+		this.rotationForce = sign * this.rotationMaximalForce;
+	}
 
-    reset() {
-        this.score = 0;
-        this.showScore();
-        this.destroyed = false;
-        this.status = "idle";
-        this.rotation = 0;
-        this.rotationVel = 0;
-        this.vel = { x: 0, y: 0 };
-        this.alpha = 1;
-    }
+	boost({ direction }: { direction: boostDirection }) {
+		if (this.destroyed) return;
+		this.status = `boost_${direction}`;
+		const sign = direction == "forwards" ? +1 : -1;
+		this.force = {
+			x: sign * this.maximalForce * Math.cos(this.rotation),
+			y: sign * this.maximalForce * Math.sin(this.rotation),
+		};
+	}
+
+	reset() {
+		this.score = 0;
+		this.showScore();
+		this.destroyed = false;
+		this.status = "idle";
+		this.rotation = 0;
+		this.rotationVel = 0;
+		this.vel = { x: 0, y: 0 };
+		this.alpha = 1;
+	}
 }
