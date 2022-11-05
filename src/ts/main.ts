@@ -1,11 +1,11 @@
-import { Asteroid } from "./entities/Asteroid.js";
-import { Lazer } from "./entities/Lazer.js";
-import { SpaceShip } from "./entities/SpaceShip.js";
-import { clearCanvas, makeCanvasesFullScreen } from "./canvas.js";
-import { debounce } from "./helper.js";
-import { preloadImages } from "./images.js";
-import { Stars } from "./Stars.js";
-import { hideScreen, showScreen } from "./screens.js";
+import { Asteroid } from "./entities/Asteroid";
+import { Lazer } from "./entities/Lazer";
+import { SpaceShip } from "./entities/SpaceShip";
+import { clearCanvas, makeCanvasesFullScreen } from "./canvas";
+import { debounce } from "./helper";
+import { preloadImages } from "./images";
+import { Stars } from "./Stars";
+import { hideScreen, showScreen } from "./screens";
 
 makeCanvasesFullScreen();
 showScreen("loading");
